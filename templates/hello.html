@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Webpage</title>
+	<script type="text/javascript">
+		function test(){
+			window.location.href="/signUp";
+		}
+
+	</script>
+	<style type="text/css">
+		body {
+			width : 800px;
+			height : 650px;
+			margin : 20px;
+		}
+		img.medium {
+			float : left;
+			position: absolute;
+			width  : 600px;
+			height : 500px;			
+		}
+		ul.navbar {
+			background-color: #FCF9F9;
+			list-style-type: none;
+			float : right;
+			position: absolute;
+			width : 150px;
+			height : 500px;
+			padding : 0px;
+			margin-top: 0px;
+			margin-left: 570px;
+		}
+
+		ul.navbar li{
+			margin : 1em;
+			padding: 0.3em;
+		}
+
+
+	</style>
+</head>
+<body>
+	<div style="height: 500px; width: 720px; border: 3px solid black">
+		<img src="{{url_for('static', filename='images/guro.jpg')}}" alt="Hospital" class="medium">
+		<ul class="navbar">
+			<p>현재 사용자 :</p>
+			<li><input type="button" value="시스템 실행"></li>
+			<li>
+			<input type="button" id="hw" value="사용자 등록" onClick="test()">
+			</li>
+			<li><input type="button" value="계산 모델"></li>
+		</ul>
+	</div>
+
+</html>
