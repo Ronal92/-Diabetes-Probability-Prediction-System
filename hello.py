@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 # @app.errorhandler(404)
@@ -12,11 +12,16 @@ app = Flask(__name__)
 def hello(name=None):
 	return render_template("hello.html")
 
-@app.route("/signUp", methods=['GET','POST'])
+@app.route("/signUp", methods=['GET'])
 def showSignUp():
-	print("showSignUp")
 	return render_template('signup.html')
 
+@app.route("/signUps", methods=['POST'])
+def saveSignUp():
+	name=request.form['inputName']
+	email=request.form['inputEmail']
+	print('name : ' + name + ' email : ' + email)
+	return redirect("/")
 
 if __name__=="__main__":
 	app.run(debug=True)

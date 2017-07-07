@@ -2,13 +2,33 @@
 <html>
 <head>
 	<title></title>
-	<link rel="stylesheet" type="text/css" href="../static/signup.css">
-
+	<style type="text/css">
+		body {
+			width : 800px;
+			height : 650px;
+			margin : 20px;
+		}
+		.container {
+		
+			height: 500px; 
+			width: 720px; 
+			border: 3px solid;
+		}
+		.menu {
+			float : right;
+		}
+		.contents {
+			float : left;
+			position: relative;
+			height: 500px; 
+			width: 200px; 
+		}
+	</style>
 </head>
 <body>
-	
 	<div class="container">
-		<div class="header">
+		<h1 style="border-bottom: 3px solid; padding: 1px">회원 가입</h1>
+		<div class="menu">
 			<nav>
 				<ul class="nav nav-pills pull-right">
 					<li role="presentaion"><a href="hello">Home</a></li>				
@@ -17,17 +37,16 @@
 				</ul>
 			</nav>
 		</div>
-		<div class="jumbotron">
-			<h1>회원 가입</h1>
-			<form class="form-signin">
+		<div class="contents">			
+			<form action="{{ url_for('.saveSignUp') }}" method="post">
 				<label for="inputName" class="sr-only">Name</label>
 				<input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name">
 				<label for="inputEmail" class="sr-only">Email address</label>
 				<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email">
 				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" name="inputPassword" id="inputPassword" class="form-control">
+				<input type="password" name="inputPassword" value="SignUp">
 
-				<button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
+				<input type="submit" id="btnSignUp" >Sign up</button>
 			</form>
 		</div>	
 	</div>
