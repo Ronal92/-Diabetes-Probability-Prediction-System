@@ -1,0 +1,13 @@
+1. mysql 테이블 만들기
+CREATE DATABASE test;
+USE test;
+CREATE TABLE my_user(
+	id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(50) NOT NULL,
+	email VARCHAR(255) NOT NULL
+);
+
+2. $pip install flask-mysql
+연동 드라이버
+
+3. mysql 서버 키고 실행

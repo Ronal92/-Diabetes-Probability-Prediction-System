@@ -4,8 +4,11 @@
 	<meta charset="utf-8">
 	<title>My Webpage</title>
 	<script type="text/javascript">
-		function onPopup(){
+		function onEnrollUser(){
 			window.location.href="/signUp";
+		}
+		function onMeasure(){
+			window.location.href="/measure";
 		}
 
 	</script>
@@ -45,13 +48,26 @@
 	<div style="height: 500px; width: 720px; border: 3px solid black">
 		<img src="{{url_for('static', filename='images/guro.jpg')}}" alt="Hospital" class="medium">
 		<ul class="navbar">
-			<p>현재 사용자 :</p>
-			<li><input type="button" value="시스템 실행"></li>
+			<p>현재 사용자 : {{cur_name}}</p>
 			<li>
-			<input type="button" id="hw" value="사용자 등록" onClick="onPopup()">
+			<input type="button" value="시스템 실행" onClick="onMeasure()">
+			</li>
+			<li>
+			<input type="button" id="hw" value="사용자 등록" onClick="onEnrollUser()">
 			</li>
 			<li><input type="button" value="계산 모델"></li>
 		</ul>
 	</div>
 
+	{% with msgs = get_flashed_messages() %}
+		{% if msgs %}
+			{%- for msg in msgs %}
+				<div>
+					{{msg}}
+				</div>
+			{% endfor -%}
+		{% endif %}
+	{% endwith %}
+
+	{% block body %} {% endblock %}
 </html>
