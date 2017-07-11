@@ -1,0 +1,27 @@
+body {
+	width : 800px;
+	height : 650px;
+	margin : 20px;
+}
+img.medium {
+	float : left;
+	position: absolute;
+	width  : 600px;
+	height : 500px;			
+}
+ul.navbar {
+	background-color: #FFFFFF;
+	list-style-type: none;
+	float : right;
+	position: absolute;
+	width : 150px;
+	height : 500px;
+	padding : 0px;
+	margin-top: 0px;
+	margin-left: 570px;
+}
+
+ul.navbar li{
+	margin : 1em;
+	padding: 0.3em;
+}
