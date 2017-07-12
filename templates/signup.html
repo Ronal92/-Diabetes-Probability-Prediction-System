@@ -3,20 +3,49 @@
 <head>
 	<meta charset="utf-8">
 	<title>SignUp Page</title>
-	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/signUp.css') }}">
-	
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/signup.css') }}">
+	<script type="text/javascript">
+	function onBack(){
+		window.location.href="/";
+	}
+
+
+	</script>
+	<style type="text/css">
+		body {
+		  width : 800px;
+		  height : 650px;
+		  margin : 20px;
+		}
+		.header {
+		  position: absolute; 
+		  width: 720px; 
+		  height: 50px; 
+		  border-bottom: 3px solid; 
+		  margin: 0px;
+		}
+		.container {
+
+		  height: 500px; 
+		  width: 720px; 
+		  border: 3px solid;
+		}
+
+		.contents {
+		  float : left;
+		  position: absolute;
+		  top: 100px;
+		  height: 500px; 
+		  width: 200px; 
+		}
+
+	</style>
 </head>
 <body>
 	<div class="container">
-		<h1 style="border-bottom: 3px solid; padding: 1px">회원 가입</h1>
-		<div class="menu">
-			<nav>
-				<ul class="nav nav-pills pull-right">
-					<li role="presentaion"><a href="hello">Home</a></li>				
-					<li role="presentaion"><a href="#">SignIn</a></li>
-					<li role="presentaion" class="active"><a href="#"></a>SignUp</li>
-				</ul>
-			</nav>
+		<div class="header">
+			<p style="float: left; margin: 0px; width: 400px; text-align: left; font-size: 30px; font-weight: 100"><strong>사용자 등록</strong></p>
+			<input type="button" value="뒤로" onClick="onBack()" style="float: right; margin-right: : 20px">
 		</div>
 		<div class="contents">			
 			<form action="{{ url_for('.saveSignUp') }}" method="post">
@@ -24,10 +53,10 @@
 				<input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name">
 				<label for="inputEmail" class="sr-only">Email address</label>
 				<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email">
-				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" name="inputPassword" value="SignUp">
-
-				<input type="submit" id="btnSignUp" >Sign up</button>
+				<!-- <label for="inputPassword" class="sr-only">Password</label>
+				<input type="password" name="inputPassword" value="SignUp"> -->
+				<br>
+				<input type="submit" id="btnSignUp" value="Sign up" >
 			</form>
 		</div>	
 	</div>
