@@ -13,9 +13,13 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 mysql.init_app(app)
 
+#로그인 화면
+@app.route("/")
+def login():
+	return render_template("login.html")
 
 # 메이 화면
-@app.route("/")
+@app.route("/main")
 def hello():
 	return render_template("hello.html", cur_name = request.args.get('cur_name'))
 
@@ -49,9 +53,15 @@ def saveSignUp():
 
 	return redirect(url_for('hello',cur_name=name))
 
+# 계산 실행 
 @app.route("/measure", methods=['GET'])
 def measureDiabets():
 	return render_template('measure.html')
+
+# 계산 결과 
+@app.route("/measure/result", methods=['GET'])
+def measureDiabetsResult():
+	return render_template('result.html')
 
 
 if __name__=="__main__":

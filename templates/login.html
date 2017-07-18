@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>로그인 화면</title>
+		<script type="text/javascript">
+		function onHome(){
+			window.location.href="/main";
+		}
+	</script>
+	<style type="text/css">
+		.member {
+		 font-size: 50px;
+		 text-shadow: 0 0 10px #666;
+		 color: #fff;
+		 margin: 0 auto;
+		 text-align: center;
+		 text-transform: capitalize;
+		 font-family: "맑은 고딕";
+		 font-style: italic;
+		}
+
+		body {
+		 font-family: "맑은 고딕";
+		 font-size: 12px;
+		}
+
+		.form {
+		 width: 498px;
+		 height: 150px;
+		 border-radius: 25px;
+		 border: 5px double #999;
+		 margin: 30px auto;
+		}
+
+		.form2 {
+		 width: 380px;
+		 min-width: 320px;
+		 height: 200px;
+		 margin: 60px auto;
+		 margin-left:20px;
+		}
+
+		.form3 {
+		 float: left;
+		 /*   background:#f00;  */
+		}
+
+		.form3 label {
+		 width: 100px;
+		 height: 20px;
+		 /*  display: block; */
+		 float: left;
+		}
+
+		.form4 {
+		 padding: 0px 0px 0px 70px;
+		}
+
+		#wrap {
+		 width: 600px;
+		 height: 500px;
+		 margin: 0px ;
+		}
+
+		
+
+		input[type="button"] {
+		 float: left;
+		 /*  display:block; */
+		 height: 50px;
+		 background: #FFBB00;
+		 border-radius: 5px;
+		 border: none;
+		 font-family: "맑은 고딕";
+		}
+
+	</style>
+</head>
+<body>
+<form>
+  <div id="wrap">
+   <h1 class="member">Login</h1>
+   <div class="form">
+    <div class="form2">
+     <div class="form3">
+      <label for="user">아이디</label><input type="text" id="user">
+      <div class="clear"></div>
+      <label for="user">비밀번호</label><input type="password" id="user">
+     </div>
+     <input type="button" value="로그인하기" onClick="onHome()" value="로그인하기">
+     <div class="clear"></div>
+     <div class="form4">
+
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+
+</body>
+</html>

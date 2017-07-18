@@ -5,7 +5,10 @@
 	<title>Measuring page</title>
 	<script type="text/javascript">
 		function onBack(){
-			window.location.href="/";
+			window.location.href="/main";
+		}
+		function onResult(){
+			window.location.href="/measure/result";			
 		}
 
 
@@ -17,8 +20,8 @@
 			margin : 20px;
 		}
 		.container {
-			width: 900px; 
-			height: 520px;
+			width: 870px; 
+			height: 420px;
 			padding: 5px;
 			border: 3px solid;
 		}
@@ -52,14 +55,7 @@
 			text-align: left;
 			margin-bottom: 5px;			
 		}
-		.input3 {	
-			position: relative;		
-			width: 850px;
-			height: 150px;
-			left: 3px;
-			text-align: left;
-			margin-bottom: 5px;			
-		}
+
 		.input_detail_1 {
 			float: left;
 			width: 100px;
@@ -87,7 +83,7 @@
 </head>
 <body>
 	<div class="container">
-		<div class="header" style="position: absolute; width: 70%; height: 50px; border-bottom: 3px solid; margin: 0px;">
+		<div class="header" style="position: absolute; width: 850px; height: 50px; border-bottom: 3px solid; margin: 0px;">
 			<p style="float: left; margin: 0px; width: 600px; text-align: left; font-size: 30px; font-weight: 100"><strong>구로 병원 로지스틱 계산 시스템</strong></p>
 			<input type="button" value="뒤로" onClick="onBack()" style="float: right;">
 			
@@ -168,34 +164,12 @@
 					<input type="text" style="position: absolute; left: 400px"/>
 					<label class="input_detail_3">GGT</label>
 					<input type="text" style="position: absolute; left: 650px"  >
-					<button style="position: absolute; left: 800px">검색</button>	
+					<button style="position: absolute; left: 800px" onClick="onResult()">검색</button>	
 					<br />
 
 			</fieldset>
 		</div>	
-		<div class="input3">
-			<fieldset>
-					
-					<legend>RESULT </legend>
-					<label style="position: relative; margin-left: 70px; width: 200px;">임신성 고혈압(모델1)</label>
-					<input type="text" style="position: relative; "  />
-					<label style="position: relative; margin-left: 20px; width: 200px;">임신성 당뇨(모델1)</label>
-					<input type="text" style="position: relative; "/>
-
-					<br />
-
-					<label style="position: relative; margin-left: 70px; width: 200px;">임신성 고혈압(모델2)</label>
-					<input type="text" style="position: relative; " >
-					<label style="position: relative; margin-left: 20px; width: 200px;">임신성 당뇨(모델2)</label>
-					<input type="text" style="position: relative; "/>
-
-					<br />
-
-					
-
-			</fieldset>
-
-		</div>
+		
 	</div>
 
 </body>

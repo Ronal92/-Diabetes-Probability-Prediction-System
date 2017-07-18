@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Measuring page</title>
+	<script type="text/javascript">
+		function onBack(){
+			window.location.href="/main";
+		}
+		function onResult(){
+			window.location.href="/measure/result";			
+		}
+
+
+	</script>
+	<style type="text/css">
+		body {
+			width : 800px;
+			height : 650px;
+			margin : 20px;
+		}
+		.container {
+			width: 870px; 
+			height: 300px;
+			padding: 5px;
+			border: 3px solid;
+		}
+
+
+		input[type="text"] {
+		    width: 120px;
+		    border: 1px solid #d6d6d6;
+		    padding: 2px;
+		    outline: none;
+		}
+		
+		table {
+			    border-spacing: 2px;
+			width: 820px;
+			height: 100px;
+			left: 3px;
+			    border-color: black;
+			margin-top: 100px;
+		}
+
+		th, td {
+			    padding: 5px 30px 5px 10px;
+		}
+
+		th {
+			width: 200px;
+		    text-align: left;
+		    background-color: #e0e9f0;
+		    border-top: 1px solid #f1f8fe;
+		    border-bottom: 1px solid #cbd2d8;
+		    border-right: 1px solid #cbd2d8;
+
+		}
+
+		td {
+			text-align: right;
+			background-color: #f1f8fe;
+		}
+
+	
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header" style="position: absolute; width: 850px; height: 50px; border-bottom: 3px solid; margin: 0px;">
+			<p style="float: left; margin: 0px; width: 600px; text-align: left; font-size: 30px; font-weight: 100"><strong>구로 병원 로지스틱 계산 시스템</strong></p>
+			<input type="button" value="홈으로" onClick="onBack()" style="float: right;">
+			
+
+		</div>
+		<table>
+			<tr>
+				<th>
+					임신성 고혈압(모델1)
+				</th>
+				<td>
+					?????
+				</td>
+				<th>
+					임신성 당뇨(모델1)
+				</th>
+				<td>
+					?????
+				</td>
+			</tr>
+			<tr>
+				<th>
+					임신성 고혈압(모델2)
+				</th>
+				<td>
+					?????
+				</td>
+				<th>
+					임신성 당뇨(모델2)
+				</th>
+				<td>
+					?????
+				</td>
+			</tr>
+
+		</table>
+			
+</body>
+</html>
