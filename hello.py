@@ -56,6 +56,7 @@ def measureDiabets():
 
 if __name__=="__main__":
 	app.run(debug=True)
+	# app.run(host='163.152.184.176', debug=True)
 
 #<!-- page_not_found.html -->
 #sorry, snacky... page not found...
