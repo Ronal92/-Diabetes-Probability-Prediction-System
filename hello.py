@@ -1,27 +1,41 @@
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for, session
 from flaskext.mysql import MySQL
 import json
 
 app = Flask(__name__)
 app.secret_key = 'secret'
-mysql = MySQL()
 
+mysql = MySQL()
+'''
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
 app.config['MYSQL_DATABASE_DB'] = 'test'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-
 mysql.init_app(app)
+'''
 
 #로그인 화면
 @app.route("/")
-def login():
+def showLoginPage():
 	return render_template("login.html")
 
-# 메이 화면
+# 메인 화면
 @app.route("/main")
-def hello():
+def showMainPage():
 	return render_template("hello.html", cur_name = request.args.get('cur_name'))
+
+''' # TODO : 로긴처리
+def tryLogin():
+	if request.method == 'POST':
+		if(request.form['user'] == 'ku'
+		   and request.form['password'] == '1234'):
+			session['login']=True
+			session['username']= request.form['user']
+		else:
+			return  'invalid LOGIN'
+	return render_template("hello.html", cur_name = request.args.get('cur_name'))
+'''
+
 
 # 사용자 등록 페이지
 @app.route("/signUp", methods=['GET'])
@@ -65,7 +79,7 @@ def measureDiabetsResult():
 
 
 if __name__=="__main__":
-	app.run(debug=True)
+	app.run(debug=True, host = '127.0.0.1', port= 5000)
 	# app.run(host='163.152.184.176', debug=True)
 
 #<!-- page_not_found.html -->
