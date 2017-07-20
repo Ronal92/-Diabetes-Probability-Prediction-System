@@ -22,24 +22,23 @@
 		<ul class="navbar">
 			<p>현재 사용자 : {{cur_name}}</p>
 			<li>
-			<input type="button" value="시스템 실행" onClick="onMeasure()">
+				<input type="button" value="시스템 실행" onClick="onMeasure()">
 			</li>
 			<li>
-			<input type="button" id="hw" value="사용자 등록" onClick="onEnrollUser()">
+				<input type="button" id="hw" value="사용자 등록" onClick="onEnrollUser()">
 			</li>
-			<li><input type="button" value="계산 모델"></li>
+			
+				{% with msgs = get_flashed_messages() %}
+					{% if msgs %}
+						<li>
+							<input type="button" value="계산 모델">
+						</li>
+					{% endif %}
+				{% endwith %}
+
+				{% block body %} {% endblock %}
 		</ul>
 	</div>
 
-	{% with msgs = get_flashed_messages() %}
-		{% if msgs %}
-			{%- for msg in msgs %}
-				<div>
-					{{msg}}
-				</div>
-			{% endfor -%}
-		{% endif %}
-	{% endwith %}
 
-	{% block body %} {% endblock %}
 </html>

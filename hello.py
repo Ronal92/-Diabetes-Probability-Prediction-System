@@ -108,6 +108,10 @@ def saveSignUp():
 	# else:
 	# 	flash('같은 사용자가 존재합니다.')
 
+
+	if name=='koreauniv' : ## 관리자인지 구분한다 ##
+		flash('관리자')
+
 	return redirect(url_for('showMainPage',cur_name=name))
 
 # 계산 실행 
