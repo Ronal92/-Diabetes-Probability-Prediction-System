@@ -3,10 +3,18 @@
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 # from flaskext.mysql import MySQL
+import csv
 import json
+
+diabeteList1 = []
+diabeteList2 = []
+hyperList1 = []
+hyperList2 = []
 
 app = Flask(__name__)
 app.secret_key = 'secret'
+
+
 
 # mysql = MySQL()
 # '''
@@ -16,6 +24,32 @@ app.secret_key = 'secret'
 # app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 # mysql.init_app(app)
 # '''
+
+def readCSVweight():
+	f= open('calculateWeight.csv', 'r')
+	csvReader = csv.reader(f)
+	lineNum=0
+
+	for line in csvReader:
+		lineNum +=1
+
+		if lineNum == 3:
+			diabeteList1 = line[1:]
+		elif lineNum == 4:
+			diabeteList2 = line[1:]
+		elif lineNum == 5:
+			hyperList1 = line[1:]
+		elif lineNum ==6:
+			hyperList2 = line[1:]
+
+	print(diabeteList1)
+	print(diabeteList2)
+	print(hyperList1)
+	print(hyperList2)
+	f.close()
+	print("file closed")
+
+readCSVweight() # Read csv before app start
 
 #로그인 화면
 @app.route("/")
