@@ -10,6 +10,7 @@ diabeteList1 = []
 diabeteList2 = []
 hyperList1 = []
 hyperList2 = []
+calWeightList = []
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -75,7 +76,7 @@ def tryLogin():
 			session['username']= request.form['user']
 		else:
 			return  'invalid LOGIN'
-	return render_template("hello.html", cur_name = request.args.get('cur_name'))
+t	return render_template("hello.html", cur_name = request.args.get('cur_name'))
 '''
 
 
@@ -117,9 +118,28 @@ def measureDiabets():
 # 계산 결과 
 @app.route("/measure/result", methods=['GET', 'POST'])
 def measureDiabetsResult():
-
-	# TODO 값을 어떻게 받을지 고민..
-	#request.form[]
+	calWeightList[0] = request.form['height']
+	calWeightList[1] = request.form['weight']
+	calWeightList[2] = request.form['waist']
+	calWeightList[3] = request.form['age']
+	calWeightList[4] = request.form['pastHB']
+	calWeightList[5] = request.form['pastDB']
+	calWeightList[6] = request.form['famHB']
+	calWeightList[7] = request.form['famDB']
+	calWeightList[8] = request.form['smoke']
+	calWeightList[9] = request.form['drink']
+	calWeightList[10] = request.form['hdp']
+	calWeightList[11] = request.form['ldp']
+	calWeightList[12] = request.form['bc']
+	calWeightList[13] = request.form['bs']
+	calWeightList[14] = request.form['col']
+	calWeightList[15] = request.form['tg']
+	calWeightList[16] = request.form['hdl']
+	calWeightList[17] = request.form['ldl']
+	calWeightList[18] = request.form['creatine']
+	calWeightList[19] = request.form['got']
+	calWeightList[20] = request.form['gpt']
+	calWeightList[21] = request.form['ggt']
 
 	return render_template('result.html')
 
