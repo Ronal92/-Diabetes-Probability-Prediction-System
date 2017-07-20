@@ -25,6 +25,11 @@ app.secret_key = 'secret'
 # mysql.init_app(app)
 # '''
 
+def calculateResult(*args):
+	#TODO 해당값들을 받아서 index순서대로 list와 곱해서 4개의 값을 리스트 등으로 전달한다.
+	pass
+
+
 def readCSVweight():
 	f= open('calculateWeight.csv', 'r')
 	csvReader = csv.reader(f)
@@ -42,12 +47,12 @@ def readCSVweight():
 		elif lineNum ==6:
 			hyperList2 = line[1:]
 
-	print(diabeteList1)
-	print(diabeteList2)
-	print(hyperList1)
-	print(hyperList2)
+	#print(diabeteList1)
+	#print(diabeteList2)
+	#print(hyperList1)
+	#print(hyperList2)
 	f.close()
-	print("file closed")
+	#print("file closed")
 
 readCSVweight() # Read csv before app start
 
@@ -110,8 +115,12 @@ def measureDiabets():
 	return render_template('measure.html')
 
 # 계산 결과 
-@app.route("/measure/result", methods=['GET'])
+@app.route("/measure/result", methods=['GET', 'POST'])
 def measureDiabetsResult():
+
+	# TODO 값을 어떻게 받을지 고민..
+	#request.form[]
+
 	return render_template('result.html')
 
 
