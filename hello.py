@@ -120,30 +120,36 @@ def measureDiabets():
 	return render_template('measure.html')
 
 # 계산 결과 
-@app.route("/measure/result", methods=['GET', 'POST'])
+@app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
-	calWeightList[0] = request.form['height']
-	calWeightList[1] = request.form['weight']
-	calWeightList[2] = request.form['waist']
-	calWeightList[3] = request.form['age']
-	calWeightList[4] = request.form['pastHB']
-	calWeightList[5] = request.form['pastDB']
-	calWeightList[6] = request.form['famHB']
-	calWeightList[7] = request.form['famDB']
-	calWeightList[8] = request.form['smoke']
-	calWeightList[9] = request.form['drink']
-	calWeightList[10] = request.form['hdp']
-	calWeightList[11] = request.form['ldp']
-	calWeightList[12] = request.form['bc']
-	calWeightList[13] = request.form['bs']
-	calWeightList[14] = request.form['col']
-	calWeightList[15] = request.form['tg']
-	calWeightList[16] = request.form['hdl']
-	calWeightList[17] = request.form['ldl']
-	calWeightList[18] = request.form['creatine']
-	calWeightList[19] = request.form['got']
-	calWeightList[20] = request.form['gpt']
-	calWeightList[21] = request.form['ggt']
+
+	# calculateWeight = []
+
+	# calWeightList[0] = request.form['height']
+	# calWeightList[1] = request.form['weight']
+	# calWeightList[2] = request.form['waist']
+	# calWeightList[3] = request.form['age']
+	# calWeightList[4] = request.form['pastHB']
+	# calWeightList[5] = request.form['pastDB']
+	# calWeightList[6] = request.form['famHB']
+	# calWeightList[7] = request.form['famDB']
+	# calWeightList[8] = request.form['smoke']
+	# calWeightList[9] = request.form['drink']
+	# calWeightList[10] = request.form['hdp']
+	# calWeightList[11] = request.form['ldp']
+	# calWeightList[12] = request.form['bc']
+	# calWeightList[13] = request.form['bs']
+	# calWeightList[14] = request.form['col']
+	# calWeightList[15] = request.form['tg']
+	# calWeightList[16] = request.form['hdl']
+	# calWeightList[17] = request.form['ldl']
+	# calWeightList[18] = request.form['creatine']
+	# calWeightList[19] = request.form['got']
+	# calWeightList[20] = request.form['gpt']
+	# calWeightList[21] = request.form['ggt']
+
+	for field in request.form:
+		print(request.form[field] + ' ')
 
 	return render_template('result.html')
 
