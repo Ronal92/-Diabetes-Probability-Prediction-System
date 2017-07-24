@@ -28,6 +28,15 @@ app.secret_key = 'secret'
 
 def calculateResult(*args):
 	#TODO 해당값들을 받아서 index순서대로 list와 곱해서 4개의 값을 리스트 등으로 전달한다.
+
+	i =0
+	diab1, diab2, hyper1,hyper2 = 0.0
+
+	for i in args.count:
+		diab1 += args[i] * diabeteList1[i]
+		diab2 += args[i] * diabeteList2[i]
+		hyper1 += args[i] * hyperList1[i]
+		hyper2 += args[i] * hyperList2[i]
 	pass
 
 
@@ -120,7 +129,7 @@ def measureDiabets():
 	return render_template('measure.html')
 
 # 계산 결과 
-@app.route("/measure/result", methods=['GET', 'POST'])
+@app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
 	calWeightList[0] = request.form['height']
 	calWeightList[1] = request.form['weight']
@@ -144,6 +153,10 @@ def measureDiabetsResult():
 	calWeightList[19] = request.form['got']
 	calWeightList[20] = request.form['gpt']
 	calWeightList[21] = request.form['ggt']
+
+	for i in calWeightList:
+		print(calWeightList[i])
+
 
 	return render_template('result.html')
 
