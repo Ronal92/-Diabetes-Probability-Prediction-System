@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*- 
 
-
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 # from flaskext.mysql import MySQL
-import csv
+import csv, math
 import json
+
+'''
+global diabeteList1
+global diabeteList2
+global hyperList1
+global hyperList2
+'''
 
 diabeteList1 = []
 diabeteList2 = []
@@ -16,7 +22,6 @@ app = Flask(__name__)
 app.secret_key = 'secret'
 
 
-
 # mysql = MySQL()
 # '''
 # app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -26,22 +31,42 @@ app.secret_key = 'secret'
 # mysql.init_app(app)
 # '''
 
-def calculateResult(*args):
-	#TODO 해당값들을 받아서 index순서대로 list와 곱해서 4개의 값을 리스트 등으로 전달한다.
-
+def calculateResult():
 	i =0
-	diab1, diab2, hyper1,hyper2 = 0.0
+	diab1 =0.0
+	diab2 =0.0
+	hyper1 =0.0
+	hyper2 =0.0
 
-	for i in args.count:
-		diab1 += args[i] * diabeteList1[i]
-		diab2 += args[i] * diabeteList2[i]
-		hyper1 += args[i] * hyperList1[i]
-		hyper2 += args[i] * hyperList2[i]
-	pass
+	for i in range(len(calWeightList)):
+		if i ==0:
+			diab1 += calWeightList[i]
+			diab2 += calWeightList[i]
+			hyper1 += calWeightList[i]
+			hyper2 += calWeightList[i]
+		else:
+			diab1 += calWeightList[i] * diabeteList1[i-1]
+			diab2 += calWeightList[i] * diabeteList2[i-1]
+			hyper1 += calWeightList[i] * hyperList1[i-1]
+			hyper2 += calWeightList[i] * hyperList2[i-1]
+		i=+1
 
+	diab1_result = round( 1 / (math.exp(-1*diab1)+1) , 6)
+	diab2_result = round( 1 / (math.exp(-1*diab2)+1) , 6)
+	hyper1_result = round( 1 / (math.exp(-1*hyper1)+1) , 6)
+	hyper2_result = round( 1 / (math.exp(-1*hyper2)+1) , 6)
+
+	print(" d1 = "+str(diab1_result)+" d2 = "+str(diab2_result)+" h1 = "+str(hyper1_result)+" h1 = "+str(hyper2_result))
+	return [hyper1_result,hyper2_result,diab1_result,diab2_result]
+
+def insertLineIntoList(list, line):
+	for column in line :
+		if column :
+			list.append(float(column))
 
 def readCSVweight():
 	f= open('calculateWeight.csv', 'r')
+	print('file opened')
 	csvReader = csv.reader(f)
 	lineNum=0
 
@@ -49,20 +74,27 @@ def readCSVweight():
 		lineNum +=1
 
 		if lineNum == 3:
-			diabeteList1 = line[1:]
+			insertLineIntoList(diabeteList1, line[1:])
 		elif lineNum == 4:
-			diabeteList2 = line[1:]
+			 insertLineIntoList(diabeteList2, line[1:])
 		elif lineNum == 5:
-			hyperList1 = line[1:]
+			insertLineIntoList(hyperList1, line[1:])
 		elif lineNum ==6:
-			hyperList2 = line[1:]
+			insertLineIntoList(hyperList2, line[1:])
 
-	#print(diabeteList1)
+	#print(len(diabeteList1))
 	#print(diabeteList2)
-	#print(hyperList1)
+	#print(len(hyperList1))
 	#print(hyperList2)
 	f.close()
-	#print("file closed")
+	print("file closed")
+
+
+def stringToValue(str):
+	if str == 'yes':
+		return 1
+	elif str == 'no':
+		return 0
 
 readCSVweight() # Read csv before app start
 
@@ -131,40 +163,34 @@ def measureDiabets():
 # 계산 결과 
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
+	# sorting 문제 때문에 그냥 하드코딩스럽게 박아두겠습니다.
+	calWeightList.append(int(request.form['height']))
+	calWeightList.append(int(request.form['weight']))
+	calWeightList.append(int(request.form['waist']))
+	calWeightList.append(int(request.form['age']))
+	calWeightList.append(stringToValue(request.form['pastHB']))
+	calWeightList.append(stringToValue(request.form['pastDB']))
+	calWeightList.append(stringToValue(request.form['famHB']))
+	calWeightList.append(stringToValue(request.form['famDB']))
+	calWeightList.append(int(request.form['smoke']))
+	calWeightList.append(int(request.form['drink']))
+	calWeightList.append(int(request.form['exercise']))
+	calWeightList.append(float(request.form['hdp']))
+	calWeightList.append(float(request.form['ldp']))
+	calWeightList.append(float(request.form['bc']))
+	calWeightList.append(float(request.form['bs']))
+	calWeightList.append(float(request.form['col']))
+	calWeightList.append(float(request.form['tg']))
+	calWeightList.append(float(request.form['hdl']))
+	calWeightList.append(float(request.form['ldl']))
+	calWeightList.append(float(request.form['creatine']))
+	calWeightList.append(float(request.form['got']))
+	calWeightList.append(float(request.form['gpt']))
+	calWeightList.append(float(request.form['ggt']))
 
-	# calculateWeight = []
-
-	# calWeightList[0] = request.form['height']
-	# calWeightList[1] = request.form['weight']
-	# calWeightList[2] = request.form['waist']
-	# calWeightList[3] = request.form['age']
-	# calWeightList[4] = request.form['pastHB']
-	# calWeightList[5] = request.form['pastDB']
-	# calWeightList[6] = request.form['famHB']
-	# calWeightList[7] = request.form['famDB']
-	# calWeightList[8] = request.form['smoke']
-	# calWeightList[9] = request.form['drink']
-	# calWeightList[10] = request.form['hdp']
-	# calWeightList[11] = request.form['ldp']
-	# calWeightList[12] = request.form['bc']
-	# calWeightList[13] = request.form['bs']
-	# calWeightList[14] = request.form['col']
-	# calWeightList[15] = request.form['tg']
-	# calWeightList[16] = request.form['hdl']
-	# calWeightList[17] = request.form['ldl']
-	# calWeightList[18] = request.form['creatine']
-	# calWeightList[19] = request.form['got']
-	# calWeightList[20] = request.form['gpt']
-	# calWeightList[21] = request.form['ggt']
-
-	for field in request.form:
-		print(request.form[field] + ' ')
-
-	for i in calWeightList:
-		print(calWeightList[i])
-
-
-	return render_template('result.html')
+	print(calWeightList)
+	calculateResult()
+	return render_template('result.html') #, result = calculateResult() )
 
 
 if __name__=="__main__":
