@@ -3,11 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<title>SignUp Page</title>
-	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/signup.css') }}">
+<!-- 	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/signup.css') }}"> -->
 	<script type="text/javascript">
-	function onBack(){
-		window.location.href="/";
-	}
+		isUser = {{isUser}} + "";
+		if(isUser.indexOf('true')>-1){
+			alert('같은 사용자가 존재합니다.');
+		}
+		
+
+		function onBack(){
+			window.location.href="/main";
+		}
 
 
 	</script>
@@ -50,9 +56,9 @@
 		<div class="contents">			
 			<form action="{{ url_for('.saveSignUp') }}" method="post">
 				<label for="inputName" class="sr-only">Name</label>
-				<input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name">
-				<label for="inputEmail" class="sr-only">Email address</label>
-				<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email">
+				<input type="name" name="inputID" id="inputName" class="form-control" placeholder="Name">
+				<label for="inputEmail" class="sr-only">Password</label>
+				<input type="password" name="inputPWD" id="inputPWD" class="form-control" >
 				<!-- <label for="inputPassword" class="sr-only">Password</label>
 				<input type="password" name="inputPassword" value="SignUp"> -->
 				<br>
@@ -60,6 +66,7 @@
 			</form>
 		</div>	
 	</div>
+
 
 </body>
 </html>

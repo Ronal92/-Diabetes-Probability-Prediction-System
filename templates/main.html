@@ -11,6 +11,10 @@
 			window.location.href="/measure";
 		}
 
+		function onSettingValue(){
+			window.location.href="/setting";
+		}
+
 	</script>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/hello.css') }}">
 
@@ -31,7 +35,7 @@
 				{% with msgs = get_flashed_messages() %}
 					{% if msgs %}
 						<li>
-							<input type="button" value="계산 모델">
+							<input type="button" value="계산 모델" onClick="onSettingValue()">
 						</li>
 					{% endif %}
 				{% endwith %}
