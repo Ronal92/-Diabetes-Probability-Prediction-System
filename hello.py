@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
-from flaskext.mysql import MySQL
+# from flaskext.mysql import MySQL
 import csv, math
 import json
 
@@ -25,13 +25,13 @@ app = Flask(__name__)
 app.secret_key = 'secret'
 
 
-mysql = MySQL()
+# mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
-app.config['MYSQL_DATABASE_DB'] = 'test'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
+# app.config['MYSQL_DATABASE_USER'] = 'root'
+# app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
+# app.config['MYSQL_DATABASE_DB'] = 'test'
+# app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+# mysql.init_app(app)
 
 
 def calculateResult():
@@ -112,26 +112,27 @@ def processLogin():
 
 	global isManager
 
-
 	name=request.form['id']
-	con=mysql.connect()
-	cursor =con.cursor()
 
-	## 검색
-	cursor.execute("SELECT * FROM my_user WHERE name='"+request.form['id']+"' AND pwd='"+request.form['pwd']+"';")
-	data = cursor.fetchone()
-	if data is None:
-		return redirect('/')
+	# con=mysql.connect()
+	# cursor =con.cursor()
+
+	# ## 검색
+	# cursor.execute("SELECT * FROM my_user WHERE name='"+request.form['id']+"' AND pwd='"+request.form['pwd']+"';")
+	# data = cursor.fetchone()
+	# if data is None:
+	# 	return redirect('/')
 		
-	else:
+	# else:
 
-		if data[3] == 'manager' : ## 관리자인지 구분한다 ##
-			isManager = 'true'
-			flash('관리자')
-		else :
-			isManager = 'false'
+		# if data[3] == 'manager' : ## 관리자인지 구분한다 ##
+	if name == 'koreauniv' :
+		isManager = 'true'
+		flash('관리자')
+	else :
+		isManager = 'false'
 
-		return render_template("main.html", cur_name = name);
+	return render_template("main.html", cur_name = name);
 
 
 
@@ -170,23 +171,24 @@ def saveSignUp():
 	name=request.form['inputID']
 	pwd=request.form['inputPWD']
 
-	con=mysql.connect()
-	cursor =con.cursor()
+	# con=mysql.connect()
+	# cursor =con.cursor()
 
-	## 검색
-	cursor.execute("SELECT * FROM my_user WHERE name='"+name+"' AND pwd='"+pwd+"';")
-	data = cursor.fetchone()
-	if data is None:
-		query="INSERT INTO my_user(name, pwd) VALUES ('" + name +"','" + pwd +"');"
-		cursor.execute(query)
-		con.commit()
-		return redirect(url_for('showMainPage'))
+	# ## 검색
+	# cursor.execute("SELECT * FROM my_user WHERE name='"+name+"' AND pwd='"+pwd+"';")
+	# data = cursor.fetchone()
+	# if data is None:
+	# 	query="INSERT INTO my_user(name, pwd) VALUES ('" + name +"','" + pwd +"');"
+	# 	cursor.execute(query)
+	# 	con.commit()
+	# 	return redirect(url_for('showMainPage'))
 
 		
-	else:
-		print ('이미 존재')
-		return render_template("signup.html", isUser='true')
+	# else:
+	# 	print ('이미 존재')
+	# 	return render_template("signup.html", isUser='true')
 
+	return redirect(url_for('showMainPage'))
 
 # 계산 실행 
 @app.route("/measure", methods=['GET'])
