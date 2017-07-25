@@ -12,11 +12,11 @@ global hyperList1
 global hyperList2
 '''
 
-diabeteList1 = []
-diabeteList2 = []
-hyperList1 = []
-hyperList2 = []
-calWeightList = []
+diabeteList1 = list()
+diabeteList2 = list()
+hyperList1 = list()
+hyperList2 = list()
+calWeightList = list()
 
 isManager =''
 
@@ -41,6 +41,8 @@ def calculateResult():
 	hyper1 =0.0
 	hyper2 =0.0
 
+	print(len(calWeightList))
+
 	for i in range(len(calWeightList)):
 		if i ==0:
 			diab1 += calWeightList[i]
@@ -60,7 +62,10 @@ def calculateResult():
 	hyper2_result = round( 1 / (math.exp(-1*hyper2)+1) , 6)
 
 	print(" d1 = "+str(diab1_result)+" d2 = "+str(diab2_result)+" h1 = "+str(hyper1_result)+" h1 = "+str(hyper2_result))
+	del calWeightList[:]
 	return [hyper1_result,hyper2_result,diab1_result,diab2_result]
+	
+
 
 def insertLineIntoList(list, line):
 	for column in line :
@@ -197,6 +202,7 @@ def measureDiabets():
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
 	# sorting 문제 때문에 그냥 하드코딩스럽게 박아두겠습니다.
+	print('height: ' + request.form['height'])
 	calWeightList.append(int(request.form['height']))
 	calWeightList.append(int(request.form['weight']))
 	calWeightList.append(int(request.form['waist']))
@@ -221,19 +227,24 @@ def measureDiabetsResult():
 	calWeightList.append(float(request.form['gpt']))
 	calWeightList.append(float(request.form['ggt']))
 
-	print(calWeightList)
-	calculateResult()
-	return render_template('result.html') #, result = calculateResult() )
+	resultList = list()
+	resultList = calculateResult()
+
+	# hyper1_result,hyper2_result,diab1_result,diab2_result
+	
+	print(resultList)
+
+	return render_template('result.html', resultList=resultList) #, result = calculateResult() )
 
 # 계산 모델
 @app.route("/setting")
 def valueSet():
-	return render_template('setting.html')
+	return render_template('setting.html', temp=3)
 
 
 if __name__=="__main__":
-	app.run(debug=True, host = '127.0.0.1', port= 5000)
-	# app.run(host='163.152.184.176', debug=True)
+	# app.run(debug=True, host = '127.0.0.1', port= 5000)
+	app.run(host='163.152.184.176', port= 5000, debug=True)
 
 #<!-- page_not_found.html -->
 #sorry, snacky... page not found...
