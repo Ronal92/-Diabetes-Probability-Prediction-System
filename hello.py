@@ -59,6 +59,7 @@ def calculateResult():
 	hyper1_result = round( 1 / (math.exp(-1*hyper1)+1) , 6)
 	hyper2_result = round( 1 / (math.exp(-1*hyper2)+1) , 6)
 
+	del calWeightList[:]
 	print(" d1 = "+str(diab1_result)+" d2 = "+str(diab2_result)+" h1 = "+str(hyper1_result)+" h1 = "+str(hyper2_result))
 	return [hyper1_result,hyper2_result,diab1_result,diab2_result]
 
