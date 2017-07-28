@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 	<meta charset="utf-8">
 	<title>Measuring page</title>
 	<script type="text/javascript">
 		function onBack(){
 			window.location.href="/main";
-		}
-		function onResult(){
-			window.location.href="/measure/result";			
 		}
 
 
@@ -82,6 +80,7 @@
 	</style>
 </head>
 <body>
+
 	<div class="container">
 		<div class="header" style="position: absolute; width: 850px; height: 50px; border-bottom: 3px solid; margin: 0px;">
 			<p style="float: left; margin: 0px; width: 600px; text-align: left; font-size: 30px; font-weight: 100"><strong>구로 병원 로지스틱 계산 시스템</strong></p>
@@ -90,7 +89,8 @@
 
 		</div>
 
-		<form action="{{ url_for('measureDiabetsResult') }}" method="post">
+		<form action="{{ url_for('measureDiabetsResult') }}" method="post" name=frm>
+
 
 			<div class="contents">
 				<div class="input1">								
@@ -169,7 +169,7 @@
 						<input type="text" style="position: absolute; left: 650px" name="ggt"  >
 						<br />
 						
-						<input type="submit" id="btnSignUp" value="Enter" >
+						<input type="submit" value="Enter" >
 
 	<!-- 					<button style="position: absolute; left: 800px" onClick="onResult()">검색</button>	
 	 -->					
@@ -179,9 +179,15 @@
 			</div>	
 			
 		</div>
-	</form>
+		</form>
 
 	</div>
+
+      {% if errors %}
+      <div class="alert alert-danger">
+		{{ errors }}
+      </div>
+      {% endif %}
 
 </body>
 </html>

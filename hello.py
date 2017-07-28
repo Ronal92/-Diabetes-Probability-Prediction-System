@@ -199,13 +199,52 @@ def saveSignUp():
 # 계산 실행 
 @app.route("/measure", methods=['GET'])
 def measureDiabets():
-	return render_template('measure.html')
+	errors = ''
+	return render_template('measure.html', errors = errors)
 
 # 계산 결과 
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
+
+	height 		= request.form['height'].strip()
+	weight 		= request.form['weight'].strip()
+	waist 		= request.form['waist'].strip()
+	age 		= request.form['age'].strip()
+	pastHB 		= request.form.get('pastHB', '')
+	pastDB 		= request.form.get('pastDB', '')
+	famHB 		= request.form.get('famHB', '')
+	famDB 		= request.form.get('famDB', '')
+	smoke 		= request.form['smoke'].strip()
+	drink 		= request.form['drink'].strip()
+	exercise 	= request.form['exercise'].strip()
+	hdp 		= request.form['hdp'].strip()
+	ldp 		= request.form['ldp'].strip()
+	bc			= request.form['bc'].strip()
+	bs 			= request.form['bs'].strip()
+	col 		= request.form['col'].strip()
+	tg 			= request.form['tg'].strip()
+	hdl 		= request.form['hdl'].strip()
+	ldl 		= request.form['ldl'].strip()
+	creatine 	= request.form['creatine'].strip()
+	got 		= request.form['got'].strip()
+	gpt 		= request.form['gpt'].strip()
+	ggt 		= request.form['ggt'].strip()
+
+	# validation check (유효성 검사)
+	if not height or not weight or not waist \
+		or not age or not pastHB or not pastDB \
+		or not famHB or not famDB or not smoke \
+		or not drink or not exercise or not hdp \
+		or not ldp or not bc or not bs or not col \
+		or not tg or not hdl or not ldl or not creatine \
+		or not got or not gpt or not ggt :
+
+		errors = "Please enter all the fields."
+
+		return render_template('measure.html', errors = errors)
+
 	# sorting 문제 때문에 그냥 하드코딩스럽게 박아두겠습니다.
-	print('height: ' + request.form['height'])
+
 	calWeightList.append(int(request.form['height']))
 	calWeightList.append(int(request.form['weight']))
 	calWeightList.append(int(request.form['waist']))
