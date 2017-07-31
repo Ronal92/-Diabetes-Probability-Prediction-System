@@ -13,6 +13,10 @@ calWeightList = list()
 
 isManager =''
 
+column = ['intercept', '키', '몸무게', '허리둘레', '나이' , '과거 고혈압 진단', \
+			'과거 당뇨 진단', '고혈압 가족력', '당뇨 가족력', '담배', '주간 음주 일수', '주간 증중도 운동', \
+			'수축기 혈압', '이완기 혈압', '혈색소', '혈당', '총 콜레스테롤', 'TG', 'HDL', 'LDL', 'creatinine', \
+			'GOT', 'GPT', 'GGT' ]
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -271,39 +275,23 @@ def measureDiabetsResult():
 # 계산 모델
 @app.route("/setting")
 def valueSet():
-	return render_template('setting.html',
-						   intercept_d1=diabeteList1[0],intercept_d2=diabeteList2[0],intercept_h1=hyperList1[0],intercept_h2=hyperList2[0],
-						   height_d1 = diabeteList1[1], height_d2 = diabeteList2[1],height_h1 = hyperList1[1],height_h2 = hyperList2[1],
-						   weight_d1 = diabeteList1[2], weight_d2 = diabeteList2[2],weight_h1 = hyperList1[2],weight_h2 = hyperList2[2],
-						   waist_d1 = diabeteList1[3], waist_d2 = diabeteList2[3], waist_h1 = hyperList1[3], waist_h2 = hyperList2[3],
-						   age_d1 = diabeteList1[4], age_d2 = diabeteList2[4], age_h1 = hyperList1[4], age_h2 = hyperList2[4],
-						   pastHB_d1 = diabeteList1[5], pastHB_d2 = diabeteList2[5], pastHB_h1 = hyperList1[5], pastHB_h2 = hyperList2[5],
-						   pastDB_d1 = diabeteList1[6], pastDB_d2 = diabeteList2[6], pastDB_h1 = hyperList1[6], pastDB_h2 = hyperList2[6],
-						   famHB_d1 = diabeteList1[7], famHB_d2 = diabeteList2[7], famHB_h1 = hyperList1[7], famHB_h2 = hyperList2[7],
-						   famDB_d1 = diabeteList1[8], famDB_d2 = diabeteList2[8], famDB_h1 = hyperList1[8], famDB_h2 = hyperList2[8],
-						   smoke_d1 = diabeteList1[9], smoke_d2 = diabeteList2[9], smoke_h1 = hyperList1[9], smoke_h2 = hyperList2[9],
-						   drink_d1 = diabeteList1[10], drink_d2 = diabeteList2[10], drink_h1 = hyperList1[10], drink_h2 = hyperList2[10],
-						   exercise_d1 = diabeteList1[11], exercise_d2 = diabeteList2[11], exercise_h1 = hyperList1[11], exercise_h2 = hyperList2[11],
-						   hdp_d1 = diabeteList1[12], hdp_d2 = diabeteList2[12], hdp_h1 = hyperList1[12], hdp_h2 = hyperList2[12],
-						   ldp_d1 = diabeteList1[13], ldp_d2 = diabeteList2[13], ldp_h1 = hyperList1[13], ldp_h2 = hyperList2[13],
-						   bc_d1  = diabeteList1[14], bc_d2  = diabeteList2[14], bc_h1  = hyperList1[14], bc_h2  = hyperList2[14],
-						   bs_d1  = diabeteList1[15], bs_d2  = diabeteList2[15], bs_h1  = hyperList1[15], bs_h2  = hyperList2[15],
-						   col_d1 = diabeteList1[16], col_d2 = diabeteList2[16], col_h1 = hyperList1[16], col_h2 = hyperList2[16],
-						   tg_d1  = diabeteList1[17], tg_d2  = diabeteList2[17], tg_h1  = hyperList1[17], tg_h2  = hyperList2[17],
-						   hdl_d1 = diabeteList1[18], hdl_d2 = diabeteList2[18], hdl_h1 = hyperList1[18], hdl_h2 = hyperList2[18],
-						   ldl_d1 = diabeteList1[19], ldl_d2 = diabeteList2[19], ldl_h1 = hyperList1[19], ldl_h2 = hyperList2[19],
-						   creatine_d1 = diabeteList1[20], creatine_d2 = diabeteList2[20], creatine_h1 = hyperList1[20], creatine_h2 = hyperList2[20],
-						   got_d1 = diabeteList1[21], got_d2 = diabeteList2[21], got_h1 = hyperList1[21], got_h2 = hyperList2[21],
-						   gpt_d1 = diabeteList1[22], gpt_d2 = diabeteList2[22], gpt_h1 = hyperList1[22], gpt_h2 = hyperList2[22],
-						   ggt_d1 = diabeteList1[23], ggt_d2 = diabeteList2[23], ggt_h1 = hyperList1[23], ggt_h2 = hyperList2[23])
 
-# 수정완료
-@app.route("/chagned" , methods=['POST','GET'])
-def	changeWeightFactor():
+	return render_template('setting.html', column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
+
 	
+# 수정완료
+@app.route("/setting/changed" , methods=['POST','GET'])
+def	changeWeightFactor():	
 
+	for key in request.form.keys() :
+		for v in request.form.getlist(key) :
+			if not v :
+				errors = "Please enter all the fields."
+				return render_template('setting.html', errors = errors, column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
 
-	return render_template('changed.html')
+	# csv파일로 옮기기
+
+	return render_template('changed.html', msg = "Be saved completely", column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
 
 
 

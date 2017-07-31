@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<meta charset="utf-8">
+	<title>Setting</title>
+	<script type="text/javascript">
+		function onHome(){
+			window.location.href="/main";
+		}
+	</script>
+	<style type="text/css">
+		table.type10 {
+			position: relative;
+		    border-collapse: collapse;
+		    text-align: left;
+		    line-height: 1.5;
+		    border-top: 1px solid #ccc;
+		    border-bottom: 1px solid #ccc;
+		    margin: 20px 10px;
+		}
+		table.type10 thead th {
+		    width: 150px;
+		    padding: 10px;
+		    font-weight: bold;
+		    vertical-align: top;
+		    color: #fff;
+		    background: #e7708d;
+		    margin: 20px 10px;
+		}
+		table.type10 tbody th {
+		    width: 160px;
+		    padding: 10px;
+		}
+		table.type10 td {
+		    width: 350px;
+		    padding: 10px;
+		    vertical-align: top;
+		}
+		table.type10 .even {
+		    background: #fdf3f5;
+		}
+		.head {
+			height: 50px;
+		    margin: 20px 10px;
+
+		}
+		input[type="button"] {
+		 float: left;
+		 width: 60px;
+		 height: 50px;
+		 background: #FFBB00;
+		 border-radius: 5px;
+		 border: none;
+		 font-family: "맑은 고딕";
+		}
+	</style>
+</head>
+<body>
+	<div class="head">
+		<input type="button" value="홈으로" onClick="onHome()" >
+	</div>
+
+	  {% if msg %}
+	  <div class="alert alert-danger">
+		{{ msg }}
+	  </div>
+	  {% endif %}
+
+			<table class="type10">
+			    <thead>
+				    <tr>
+				        <th scope="cols"></th>
+				        <th scope="cols">diabetes 1</th>
+				        <th scope="cols">diabetes 2</th>
+				        <th scope="cols">hypertension 1</th>
+				        <th scope="cols">hypertension 2</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+			    	{% for num in range(0,24) %}
+			    		{% if num%2 == 1 %}	
+				    		<tr>
+				    			<th scope="row" >{{column[num]}}</th>
+		 				        <td >
+					        		{{diabeteList1[num]}}
+					        	</td>
+						        <td >
+					        		{{diabeteList2[num]}}
+					        	</td>
+						        <td >
+						        	{{hyperList1[num]}}
+						        </td>
+						        <td >
+						        	value={{hyperList2[num]}}
+						        </td>		      	
+				    		</tr>
+			    		{% else %}
+				    		<tr>
+				    			<th scope="row" class="even">{{column[num]}}</th>
+		 				        <td class="even">
+					        		{{diabeteList1[num]}}
+					        	</td>
+						        <td class="even">
+					        		{{diabeteList2[num]}}
+					        	</td>
+						        <td class="even">
+						        	{{hyperList1[num]}}
+						        </td>
+						        <td class="even">
+						        	value={{hyperList2[num]}}	
+						        </td>	      	
+				    		</tr>
+			    		{% endif %}
+			    	{% endfor %}  
+			    	
+			    </tbody>
+			</table>
+
+</body>
+</html>
