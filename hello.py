@@ -93,6 +93,23 @@ def readCSVweight():
 	#print(hyperList2)
 	f.close()
 
+def	getIndexOfList(key):
+	for i in column :
+		if i == key:
+			return i
+
+def updateWeightList(key, value):
+	#TODO : Key값을 column에서 비교하여 순서대로 List를 업뎃한다.
+	idx = getIndexOfList(key)
+
+
+	pass
+
+
+
+def	changeCSV():
+	#TOdo : 모두 바껴진 값을 csv에 다 떄려박는다
+	pass
 
 def stringToValue(str):
 	if str == 'yes':
@@ -288,8 +305,8 @@ def	changeWeightFactor():
 			if not v :
 				errors = "Please enter all the fields."
 				return render_template('setting.html', errors = errors, column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
+		print(key,v)
 
-	# csv파일로 옮기기
 
 	return render_template('changed.html', msg = "Be saved completely", column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
 
