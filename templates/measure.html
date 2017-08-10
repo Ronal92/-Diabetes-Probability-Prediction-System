@@ -19,7 +19,7 @@
 		}
 		.container {
 			width: 870px; 
-			height: 420px;
+			height: 550px;
 			padding: 5px;
 			border: 3px solid;
 		}
@@ -31,6 +31,10 @@
 			height: 500px; 
 			
 		}
+		input, label, select {
+			margin-top: 3px;
+		}
+
 		input[type="text"] {
 		    width: 120px;
 		    border: 1px solid #d6d6d6;
@@ -40,7 +44,7 @@
 		.input1 {
 			position: relative;
 			width: 850px;
-			height: 150px;
+			height: 200px;
 			left: 3px;
 			text-align: left;
 			margin-top: 20px;
@@ -48,7 +52,7 @@
 		.input2 {		
 			position: relative;	
 			width: 850px;
-			height: 150px;
+			height: 200px;
 			left: 3px;
 			text-align: left;
 			margin-bottom: 5px;			
@@ -62,14 +66,14 @@
 		.input_detail_2 {
 			position:absolute;
 			margin-left: 20px;
-			width: 200px;
+			width: 100px;
 			clear: left;
 		}
 		.input_detail_3 {
 			position:absolute;
-			margin-left: 20px;
 			left: 530px;
-			width: 200px;
+			width: 100px;
+			height: 20px;
 			clear: left;
 		}
 
@@ -96,82 +100,122 @@
 				<div class="input1">								
 					<fieldset>
 						<legend>INPUT 1</legend>
-						<label class="input_detail_1">키:</label>
+						<label class="input_detail_1">체질량지수</label>
 						<input type="text" style="text-align: right;" name="height" placeholder="cm" >
-						<label class="input_detail_2">과거 고혈압 진단</label>
-						<label style="position: absolute; left: 400px"><input type="radio" name="pastHB" value="yes" /> Yes</label>
-						<label style="position: absolute; left: 450px"><input type="radio" name="pastHB" value="no" /> No</label>	
-						<label class="input_detail_3">흡연 빈도</label>
-						<input style="position: absolute; left: 680px" type="text" name="smoke"  >
+						<label class="input_detail_2">총 콜레스트롤</label>
+						<input type="text" style="position: absolute; left: 350px; width: 150px; text-align: right;" name="height" >				
+						<label class="input_detail_3">감마지티피</label>
+						<input type="text"  style="position: absolute; left: 680px" name="smoke"  >
 						<br />
 
-						<label class="input_detail_1">몸무게:</label>
+						<label class="input_detail_1">수축기혈압</label>
 						<input type="text" name="weight"  >
-						<label class="input_detail_2">과거 당뇨 진단</label>
-						<label style="position: absolute; left: 400px"><input type="radio" name="pastDB" value="yes" /> Yes</label>
-						<label style="position: absolute; left: 450px"><input type="radio" name="pastDB" value="no" /> No</label>	
-						<label class="input_detail_3">주간 음주 일수</label>
-						<input type="text" style="position: absolute; left: 680px" name="drink" >
+						<label class="input_detail_2">혈색소</label>
+						<input type="text" style="position: absolute; left: 350px; width: 150px; text-align: right;" name="height" >	
+						<label class="input_detail_3">과거병력(1)</label>
+						<select id="past_disease1" style="position: absolute; left: 680px; width:120px;" name="drink">
+							<option selected disabled></option>	
+							<option value="Tuberculosis">결핵
+							<option value="hepatitis">간염
+							<option value="soyDisease">간장질환
+							<option value="heart">심장병
+							<option value="stroke">뇌졸중
+							<option value="diabetes">당뇨병
+							<option value="cancer">암
+							<option value="others">기타질환
+							<option value="nothing">없음
+						</select>
 						<br />
 
-						<label class="input_detail_1">허리둘레</label>
+						<label class="input_detail_1">이완기혈압</label>
 						<input type="text" name="waist" >
-						<label class="input_detail_2">고혈압 가족력</label>
-						<label style="position: absolute; left: 400px"><input type="radio" name="famHB" value="yes" /> Yes</label>
-						<label style="position: absolute; left: 450px"><input type="radio" name="famHB" value="no" /> No</label>	
-						<label class="input_detail_3">주간 중증도 운동 일수</label>
-						<input type="text" style="position: absolute; left: 680px" name="exercise"/ >
+						<label class="input_detail_2">AST</label>
+						<input type="text" style="position: absolute; left: 350px; width: 150px; text-align: right;" name="height" >	
+						<label class="input_detail_3">과거병력(2)</label>
+						<select id="past_disease2" style="position: absolute; left: 680px; width:120px;" name="drink">
+							<option selected disabled></option>	
+							<option value="Tuberculosis">결핵
+							<option value="hepatitis">간염
+							<option value="soyDisease">간장질환
+							<option value="heart">심장병
+							<option value="stroke">뇌졸중
+							<option value="diabetes">당뇨병
+							<option value="cancer">암
+							<option value="others">기타질환
+							<option value="nothing">없음
+						</select>
 						<br />
 
-						<label class="input_detail_1">나이:</label>
+						<label class="input_detail_1">식전혈당</label>
 						<input type="text" name="age" >
-						<label class="input_detail_2">당뇨 가족력</label>
-						<label style="position: absolute; left: 400px"><input type="radio" name="famDB" value="yes" /> Yes</label>
-						<label style="position: absolute; left: 450px"><input type="radio" name="famDB" value="no" /> No</label>	
+						<label class="input_detail_2">ALT</label>
+						<input type="text" style="position: absolute; left: 350px; width: 150px; text-align: right;" name="height" >
+						<label class="input_detail_3">과거병력(3)</label>
+						<select id="past_disease3" style="position: absolute; left: 680px; width:120px;" name="drink">
+							<option selected disabled></option>	
+							<option value="Tuberculosis">결핵
+							<option value="hepatitis">간염
+							<option value="soyDisease">간장질환
+							<option value="heart">심장병
+							<option value="stroke">뇌졸중
+							<option value="diabetes">당뇨병
+							<option value="cancer">암
+							<option value="others">기타질환
+							<option value="nothing">없음
+						</select>						
+						<br />	
 						<br />
 
 					</fieldset>
 			</div>
 
-			<div class="input2">
+			<div class="input2" >
 				<fieldset>
-						
-						<legend>INPUT 2</legend>
-						<label class="input_detail_1">수축기 혈압</label>
-						<input type="text" name="hdp" >
-						<label class="input_detail_2">총 콜레스트롤</label>
+						* 가족력
+						<legend style="margin: 0px;">INPUT 2</legend>
+						<label class="input_detail_1">간장질환유무*</label>
+	 					<label style="position: absolute; left: 110px"><input type="radio" name="famDB" value="yes" /> Yes</label>
+						<label style="position: absolute; left: 160px"><input type="radio" name="famDB" value="no" /> No</label>
+						<label class="input_detail_2" style="left: 225px;">흡연상태</label>
 						<input type="text" style="position: absolute; left: 400px" name="col"/>
-						<label class="input_detail_3">Creatinine</label>
+						<label class="input_detail_3">음주습관</label>
 						<input style="position: absolute; left: 650px" type="text" name = "creatine"/ >
 						<br />
 
-						<label class="input_detail_1">이완기 혈압</label>
+						<label class="input_detail_1">고혈압유무*</label>
 						<input type="text" name="ldp" >
-						<label class="input_detail_2">TG</label>
+						<label class="input_detail_2">흡연기간</label>
 						<input type="text" style="position: absolute; left: 400px" name="tg"/>
-						<label class="input_detail_3">GOT</label>
+						<label class="input_detail_3">1회 음주량</label>
 						<input type="text" style="position: absolute; left: 650px" name="got" >
 						<br />
 
-						<label class="input_detail_1">혈색소</label>
+						<label class="input_detail_1">뇌졸중유무*</label>
 						<input type="text" name="bc" >
 						<label class="input_detail_2">HDL</label>
-						<input type="text" style="position: absolute; left: 400px" name="hdl"/>					
+						<input type="text" style="position: absolute; left: 400px" name="hdl"/>		
 						<label class="input_detail_3">GPT</label>
 						<input type="text" style="position: absolute; left: 650px" name="gpt" >
 						<br />
 
-						<label class="input_detail_1">혈당</label>
+						<label class="input_detail_1">심장병유무*</label>
 						<input type="text" name="bs" >
-						<label class="input_detail_2">LDL</label>
+						<label class="input_detail_2">하루흡연량</label>
 						<input type="text" style="position: absolute; left: 400px" name="ldl"/>
-						<label class="input_detail_3">GGT</label>
+						<label class="input_detail_3">1주 운동횟수</label>
 						<input type="text" style="position: absolute; left: 650px" name="ggt"  >
 						<br />
 						
+						<label class="input_detail_1">당뇨병유무*</label>
+						<input type="text" name="bs" >
+						<br />
+
+						<label class="input_detail_1">암유무*</label>
+						<input type="text" name="bs" >
+						<br />					
 						<input type="submit" value="Enter" >
 
-	<!-- 					<button style="position: absolute; left: 800px" onClick="onResult()">검색</button>	
+	<!--
 	 -->					
 	 					<br />
 
