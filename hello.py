@@ -13,10 +13,10 @@ calWeightList = list()
 
 isManager =''
 
-column = ['intercept', '키', '몸무게', '허리둘레', '나이' , '과거 고혈압 진단', \
-			'과거 당뇨 진단', '고혈압 가족력', '당뇨 가족력', '담배', '주간 음주 일수', '주간 증중도 운동', \
-			'수축기 혈압', '이완기 혈압', '혈색소', '혈당', '총 콜레스테롤', 'TG', 'HDL', 'LDL', 'creatinine', \
-			'GOT', 'GPT', 'GGT' ]
+column = ['체질량지수', '수축기혈압', '이완기혈압', '식전혈당', '총콜레스테롤' , '혈색소', \
+			'AST', 'ALT', '감마지티피', '과거병력코드1 ', '과거병력코드2', '과거병력코드3', \
+			'간장질환유무 ', '고혈압유무 ', '뇌졸중유무', '심장병유무', '당뇨병유무', '암유무', '흡연상태', '흡연기간', '하루흡연량', \
+			'음주습관', '1회 음주량 ', '1주 운동횟수 ' ]
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -217,77 +217,60 @@ def measureDiabets():
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
 
-	height 		= request.form['height'].strip()
-	weight 		= request.form['weight'].strip()
-	waist 		= request.form['waist'].strip()
-	age 		= request.form['age'].strip()
-	pastHB 		= request.form.get('pastHB', '')
-	pastDB 		= request.form.get('pastDB', '')
-	famHB 		= request.form.get('famHB', '')
-	famDB 		= request.form.get('famDB', '')
-	smoke 		= request.form['smoke'].strip()
-	drink 		= request.form['drink'].strip()
-	exercise 	= request.form['exercise'].strip()
-	hdp 		= request.form['hdp'].strip()
-	ldp 		= request.form['ldp'].strip()
-	bc			= request.form['bc'].strip()
-	bs 			= request.form['bs'].strip()
-	col 		= request.form['col'].strip()
-	tg 			= request.form['tg'].strip()
-	hdl 		= request.form['hdl'].strip()
-	ldl 		= request.form['ldl'].strip()
-	creatine 	= request.form['creatine'].strip()
-	got 		= request.form['got'].strip()
-	gpt 		= request.form['gpt'].strip()
-	ggt 		= request.form['ggt'].strip()
+	famLIVER 		= request.form.get('famLIVER', '')
+	famHPRTS 		= request.form.get('famHPRTS', '')
+	famAPOP 		= request.form.get('famAPOP', '')
+	famHDISE 		= request.form.get('famHDISE', '')
+	famDIABML 		= request.form.get('famDIABML', '')
+	famCANCER 		= request.form.get('famCANCER', '')
 
 	# validation check (유효성 검사)
-	if not height or not weight or not waist \
-		or not age or not pastHB or not pastDB \
-		or not famHB or not famDB or not smoke \
-		or not drink or not exercise or not hdp \
-		or not ldp or not bc or not bs or not col \
-		or not tg or not hdl or not ldl or not creatine \
-		or not got or not gpt or not ggt :
 
-		errors = "Please enter all the fields."
+	# if not famLIVER or not famHPRTS or not famAPOP \
+	# 	or not famHDISE or not famDIABML or not famCANCER \
+	# 	or not [v for v in request.form.getlist('attributes[]')] :
 
-		return render_template('measure.html', errors = errors)
+	# 	errors = "Please enter all the fields."
 
-	# sorting 문제 때문에 그냥 하드코딩스럽게 박아두겠습니다.
+	# 	return render_template('measure.html', errors = errors)
 
-	calWeightList.append(int(request.form['height']))
-	calWeightList.append(int(request.form['weight']))
-	calWeightList.append(int(request.form['waist']))
-	calWeightList.append(int(request.form['age']))
-	calWeightList.append(stringToValue(request.form['pastHB']))
-	calWeightList.append(stringToValue(request.form['pastDB']))
-	calWeightList.append(stringToValue(request.form['famHB']))
-	calWeightList.append(stringToValue(request.form['famDB']))
-	calWeightList.append(int(request.form['smoke']))
-	calWeightList.append(int(request.form['drink']))
-	calWeightList.append(int(request.form['exercise']))
-	calWeightList.append(float(request.form['hdp']))
-	calWeightList.append(float(request.form['ldp']))
-	calWeightList.append(float(request.form['bc']))
-	calWeightList.append(float(request.form['bs']))
-	calWeightList.append(float(request.form['col']))
-	calWeightList.append(float(request.form['tg']))
-	calWeightList.append(float(request.form['hdl']))
-	calWeightList.append(float(request.form['ldl']))
-	calWeightList.append(float(request.form['creatine']))
-	calWeightList.append(float(request.form['got']))
-	calWeightList.append(float(request.form['gpt']))
-	calWeightList.append(float(request.form['ggt']))
+	return render_template('result.html') # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
-	resultList = list()
-	resultList = calculateResult()
 
-	# hyper1_result,hyper2_result,diab1_result,diab2_result
+	# # sorting 문제 때문에 그냥 하드코딩스럽게 박아두겠습니다.
+
+	# calWeightList.append(int(request.form['height']))
+	# calWeightList.append(int(request.form['weight']))
+	# calWeightList.append(int(request.form['waist']))
+	# calWeightList.append(int(request.form['age']))
+	# calWeightList.append(stringToValue(request.form['pastHB']))
+	# calWeightList.append(stringToValue(request.form['pastDB']))
+	# calWeightList.append(stringToValue(request.form['famHB']))
+	# calWeightList.append(stringToValue(request.form['famDB']))
+	# calWeightList.append(int(request.form['smoke']))
+	# calWeightList.append(int(request.form['drink']))
+	# calWeightList.append(int(request.form['exercise']))
+	# calWeightList.append(float(request.form['hdp']))
+	# calWeightList.append(float(request.form['ldp']))
+	# calWeightList.append(float(request.form['bc']))
+	# calWeightList.append(float(request.form['bs']))
+	# calWeightList.append(float(request.form['col']))
+	# calWeightList.append(float(request.form['tg']))
+	# calWeightList.append(float(request.form['hdl']))
+	# calWeightList.append(float(request.form['ldl']))
+	# calWeightList.append(float(request.form['creatine']))
+	# calWeightList.append(float(request.form['got']))
+	# calWeightList.append(float(request.form['gpt']))
+	# calWeightList.append(float(request.form['ggt']))
+
+	# resultList = list()
+	# resultList = calculateResult()
+
+	# # hyper1_result,hyper2_result,diab1_result,diab2_result
 	
-	print(resultList)
+	# print(resultList)
 
-	return render_template('result.html', resultList=resultList) #, result = calculateResult() )
+	# return render_template('result.html', resultList=resultList) #, result = calculateResult() )
 
 # 계산 모델
 @app.route("/setting")
@@ -307,8 +290,29 @@ def	changeWeightFactor():
 				return render_template('setting.html', errors = errors, column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
 		print(key,v)
 
+	# 브라우저에서 변경된 값을 불러올 때, 아래처럼 가져오면 됩니다. 
+	# for v in request.form.getlist('changedDL1[]'):
+
+	# for v in request.form.getlist('changedDL2[]'):
+
+	# for v in request.form.getlist('changedHL1[]'):
+
+	# for v in request.form.getlist('changedHL2[]'):
+
+
 
 	return render_template('changed.html', msg = "Be saved completely", column=column, diabeteList1=diabeteList1, diabeteList2=diabeteList2, hyperList1=hyperList1, hyperList2=hyperList2)
+
+# CSV 업로드하기
+@app.route("/upload")
+def uploadBefore():
+	return render_template('uploadCSV.html')
+
+# 업로드된 파일 처리하기
+@app.route("/upload/result", methods=['POST'])
+def saveUploadedFile():
+	return redirect(url_for('showMainPage'))
+
 
 
 

@@ -14,6 +14,10 @@
 		function onSettingValue(){
 			window.location.href="/setting";
 		}
+		
+		function onUploadfile(){
+			window.location.href="/upload";
+		}
 
 	</script>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/hello.css') }}">
@@ -36,6 +40,9 @@
 					{% if msgs %}
 						<li>
 							<input type="button" value="계산 모델" onClick="onSettingValue()">
+						</li>
+						<li>
+							<input type="button" value="CSV 업로드" onClick="onUploadfile()">
 						</li>
 					{% endif %}
 				{% endwith %}

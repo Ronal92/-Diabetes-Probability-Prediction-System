@@ -71,6 +71,7 @@
 		<input type="button" value="뒤로" onClick="onHome()" >
 	</div>
 
+
 	  {% if errors %}
 	  <div class="alert alert-danger">
 		{{ errors }}
@@ -95,31 +96,31 @@
 			    		<tr>
 			    			<th scope="row" >{{column[num]}}</th>
 	 				        <td >
-				        		<input type="text" name={{diabeteList1[num]}} class="form-control" value={{diabeteList1[num]}}>
+				        		<input type="text" name="changedDL1[]" class="form-control" value={{diabeteList1[num]}}>
 				        	</td>
 					        <td >
-				        		<input type="text" name={{diabeteList2[num]}} class="form-control" value={{diabeteList2[num]}}>
+				        		<input type="text" name="changedDL2[]" class="form-control" value={{diabeteList2[num]}}>
 				        	</td>
 					        <td >
-					        	<input type="text" name={{hyperList1[num]}} class="form-control" value={{hyperList1[num]}}>
+					        	<input type="text" name="changedHL1[]" class="form-control" value={{hyperList1[num]}}>
 					        </td>
 					        <td >
-					        	<input type="text" name={{hyperList2[num]}} class="form-control" value={{hyperList2[num]}}>		      	
+					        	<input type="text" name="changedHL2[]" class="form-control" value={{hyperList2[num]}}>		      	
 			    		</tr>
 						{% else %}
 			    		<tr>
 			    			<th scope="row" class="even">{{column[num]}}</th>
 	 				        <td class="even">
-				        		<input type="text" name={{diabeteList1[num]}} class="form-control" value={{diabeteList1[num]}}>
+				        		<input type="text" name="changedDL1[]" class="form-control" value={{diabeteList1[num]}}>
 				        	</td>
 					        <td class="even">
-				        		<input type="text" name={{diabeteList2[num]}} class="form-control" value={{diabeteList2[num]}}>
+				        		<input type="text" name="changedDL2[]" class="form-control" value={{diabeteList2[num]}}>
 				        	</td>
 					        <td class="even">
-					        	<input type="text" name={{hyperList1[num]}} class="form-control" value={{hyperList1[num]}}>
+					        	<input type="text" name="changedHL1[]" class="form-control" value={{hyperList1[num]}}>
 					        </td>
 					        <td class="even">
-					        	<input type="text" name={{hyperList2[num]}} class="form-control" value={{hyperList2[num]}}>		      	
+					        	<input type="text" name="changedHL2[]" class="form-control" value={{hyperList2[num]}}>		      	
 			    		</tr>		
 
 			    		{% endif %}
