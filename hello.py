@@ -2,8 +2,10 @@
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 # from flaskext.mysql import MySQL
-import csv, math
+import csv, math, io
+
 import json
+from werkzeug.utils import secure_filename
 
 diabeteList1 = list()
 diabeteList2 = list()
@@ -70,6 +72,7 @@ def insertLineIntoList(list, line):
 		if column :
 			list.append(float(column))
 
+
 def readCSVweight():
 	f= open('calculateWeight.csv', 'r')
 	csvReader = csv.reader(f)
@@ -87,11 +90,12 @@ def readCSVweight():
 		elif lineNum ==6:
 			insertLineIntoList(hyperList2, line[1:])
 
-	#print(len(diabeteList1))
-	#print(diabeteList2)
-	#print(len(hyperList1))
-	#print(hyperList2)
+	print(len(diabeteList1))
+	print(diabeteList2)
+	print(len(hyperList1))
+	print(hyperList2)
 	f.close()
+
 
 def	getIndexOfList(key):
 	for i in column :
@@ -311,6 +315,23 @@ def uploadBefore():
 # 업로드된 파일 처리하기
 @app.route("/upload/result", methods=['POST'])
 def saveUploadedFile():
+	file = request.files['file']
+
+	if file :
+		filename = secure_filename(file.filename)
+
+	ss = file.read().decode('utf-8')
+	print(ss)
+
+#	stream = io.StringIO(file.stream.read().decode('utf-8') , newline=None)
+	#csv_input = csv.reader(stream)
+
+	#readCSVweight(file.read())
+
+
+	#readCSVweight(open(request.files['file']))
+	#print(request.files['file'])
+
 	return redirect(url_for('showMainPage'))
 
 
