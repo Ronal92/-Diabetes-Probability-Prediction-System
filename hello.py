@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 # from flaskext.mysql import MySQL
-import csv, math, io
+import csv, math, io, pandas
 
 import json
 from werkzeug.utils import secure_filename
@@ -11,6 +11,13 @@ diabeteList1 = list()
 diabeteList2 = list()
 hyperList1 = list()
 hyperList2 = list()
+
+year3List = list()
+year5List = list()
+year7List = list()
+year9List = list()
+
+featList = list()
 calWeightList = list()
 
 isManager =''
@@ -23,7 +30,7 @@ column = ['체질량지수', '수축기혈압', '이완기혈압', '식전혈당
 app = Flask(__name__)
 app.secret_key = 'secret'
 
-
+csvColumn = ['features','yearThree','yearFive','yearSeven','yearNine']
 # mysql = MySQL()
 
 # app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -34,6 +41,10 @@ app.secret_key = 'secret'
 
 
 def calculateResult():
+
+
+
+	'''
 	i =0
 	diab1 =0.0
 	diab2 =0.0
@@ -64,38 +75,29 @@ def calculateResult():
 	print(" d1 = "+str(diab1_result)+" d2 = "+str(diab2_result)+" h1 = "+str(hyper1_result)+" h1 = "+str(hyper2_result))
 	del calWeightList[:]
 	return [hyper1_result,hyper2_result,diab1_result,diab2_result]
-	
+'''
 
-
+'''
 def insertLineIntoList(list, line):
 	for column in line :
 		if column :
 			list.append(float(column))
-
+'''
 
 def readCSVweight():
-	f= open('calculateWeight.csv', 'r')
-	csvReader = csv.reader(f)
-	lineNum=0
+	csvData = pandas.read_csv('LogisticWeight.csv', names=csvColumn)
+	year3List = csvData.yearThree.tolist()
+	year5List = csvData.yearFive.tolist()
+	year7List = csvData.yearSeven.tolist()
+	year9List = csvData.yearNine.tolist()
 
-	for line in csvReader:
-		lineNum +=1
+	year3List.pop(0)
+	year5List.pop(0)
+	year7List.pop(0)
+	year9List.pop(0)
 
-		if lineNum == 3:
-			insertLineIntoList(diabeteList1, line[1:])
-		elif lineNum == 4:
-			 insertLineIntoList(diabeteList2, line[1:])
-		elif lineNum == 5:
-			insertLineIntoList(hyperList1, line[1:])
-		elif lineNum ==6:
-			insertLineIntoList(hyperList2, line[1:])
-
-	print(len(diabeteList1))
-	print(diabeteList2)
-	print(len(hyperList1))
-	print(hyperList2)
-	f.close()
-
+	#print(year9List)
+	#print(len(year9List),len(year7List),len(year5List),len(year3List))
 
 def	getIndexOfList(key):
 	for i in column :
@@ -227,6 +229,9 @@ def measureDiabetsResult():
 	famHDISE 		= request.form.get('famHDISE', '')
 	famDIABML 		= request.form.get('famDIABML', '')
 	famCANCER 		= request.form.get('famCANCER', '')
+
+	bar  = request.form.getlist('attributes[]')
+	print (bar)
 
 	# validation check (유효성 검사)
 
