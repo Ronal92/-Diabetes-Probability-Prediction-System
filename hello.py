@@ -18,7 +18,7 @@ year7List = list()
 year9List = list()
 
 featList = list()
-calWeightList = list()
+userInputList = list()
 
 isManager =''
 
@@ -26,6 +26,17 @@ column = ['체질량지수', '수축기혈압', '이완기혈압', '식전혈당
 			'AST', 'ALT', '감마지티피', '과거병력코드1 ', '과거병력코드2', '과거병력코드3', \
 			'간장질환유무 ', '고혈압유무 ', '뇌졸중유무', '심장병유무', '당뇨병유무', '암유무', '흡연상태', '흡연기간', '하루흡연량', \
 			'음주습관', '1회 음주량 ', '1주 운동횟수 ' ]
+
+# index must be aligned with html info
+disease_Cat = ['nothing', 'tuberculosis', 'hepatitis', 'soyDisease', 'hypertension', 'heart', 'stroke', 'diabetes', 'cancer', 'others']
+SMK_STAT_Cat = ['never','had_been','be_ing']
+SMK_TERM_Cat = ['~5','5~9','10~19','20~29','30~']
+DSQTY_Cat = ['0.5','0.5~1','1~2','2~']
+DRNK_HABIT_Cat = ['none','monthly','weekly1~2','weekly3~4','daily']
+DRNK_QTY_Cat = ['0.5','1','1.5','2']
+EXERCI_Cat = ['0','1~2','3~4','5~6','7']
+
+
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -77,39 +88,30 @@ def calculateResult():
 	return [hyper1_result,hyper2_result,diab1_result,diab2_result]
 '''
 
-'''
-def insertLineIntoList(list, line):
-	for column in line :
-		if column :
-			list.append(float(column))
-'''
+
+def ConvertStringListIntoFloatList(strList, floatList):
+	for i in strList :
+		if i :
+			floatList.append(float(i))
+
 
 def readCSVweight():
 	csvData = pandas.read_csv('LogisticWeight.csv', names=csvColumn)
-	year3List = csvData.yearThree.tolist()
-	year5List = csvData.yearFive.tolist()
-	year7List = csvData.yearSeven.tolist()
-	year9List = csvData.yearNine.tolist()
+	year3List_str = csvData.yearThree.tolist()
+	year5List_str = csvData.yearFive.tolist()
+	year7List_str = csvData.yearSeven.tolist()
+	year9List_str = csvData.yearNine.tolist()
 
-	year3List.pop(0)
-	year5List.pop(0)
-	year7List.pop(0)
-	year9List.pop(0)
+	year3List_str.pop(0)
+	year5List_str.pop(0)
+	year7List_str.pop(0)
+	year9List_str.pop(0)
 
-	#print(year9List)
-	#print(len(year9List),len(year7List),len(year5List),len(year3List))
+	ConvertStringListIntoFloatList(year3List_str,year3List)
+	ConvertStringListIntoFloatList(year5List_str,year5List)
+	ConvertStringListIntoFloatList(year7List_str,year7List)
+	ConvertStringListIntoFloatList(year9List_str,year9List)
 
-def	getIndexOfList(key):
-	for i in column :
-		if i == key:
-			return i
-
-def updateWeightList(key, value):
-	#TODO : Key값을 column에서 비교하여 순서대로 List를 업뎃한다.
-	idx = getIndexOfList(key)
-
-
-	pass
 
 
 
@@ -117,11 +119,35 @@ def	changeCSV():
 	#TOdo : 모두 바껴진 값을 csv에 다 떄려박는다
 	pass
 
-def stringToValue(str):
+def yesNoToInt(str):
 	if str == 'yes':
-		return 1
-	elif str == 'no':
 		return 0
+	elif str == 'no':
+		return 1
+
+
+
+def pushIndexInfoToList(value, totalLen):
+	#value를 확인하고 해당 밸류를 제외한 앞뒤로 0을 밀어넣는다.
+
+	print('inputV =' , value)
+	if value == 0:
+		userInputList.append(1)
+		for i in range(1,totalLen):
+			userInputList.append(0)
+
+	else:
+		for i in range(0,value):
+			userInputList.append(0)
+
+		userInputList.append(1)
+
+		for i in range(value+1, totalLen):
+			userInputList.append(0)
+
+	print(userInputList)
+	pass
+
 
 readCSVweight() # Read csv before app start
 
@@ -222,16 +248,44 @@ def measureDiabets():
 # 계산 결과 
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
+	# 순서 중요함
+	userInputList.append(float(request.form['BMI']))
+	userInputList.append(float(request.form['BP_HIGH']))
+	userInputList.append(float(request.form['BP_LWST']))
+	userInputList.append(float(request.form['BLDS']))
+	userInputList.append(float(request.form['TOT_CHOLE']))
+	userInputList.append(float(request.form['HMG']))
+	userInputList.append(float(request.form['SGOT_AST']))
+	userInputList.append(float(request.form['SGPT_ALT']))
+	userInputList.append(float(request.form['GAMMA_GTP']))
+	pushIndexInfoToList(disease_Cat.index(request.form.get('HCHK_PMH_CD1', '')), len(disease_Cat))
+	pushIndexInfoToList(disease_Cat.index(request.form.get('HCHK_PMH_CD2', '')), len(disease_Cat))
+	pushIndexInfoToList(disease_Cat.index(request.form.get('HCHK_PMH_CD3', '')), len(disease_Cat))
+	userInputList.append(yesNoToInt(request.form.get('famLIVER', '')))
+	userInputList.append(yesNoToInt(request.form.get('famHPRTS', '')))
+	userInputList.append(yesNoToInt(request.form.get('famAPOP', '')))
+	userInputList.append(yesNoToInt(request.form.get('famHDISE', '')))
+	userInputList.append(yesNoToInt(request.form.get('famDIABML', '')))
+	userInputList.append(yesNoToInt(request.form.get('famCANCER', '')))
 
-	famLIVER 		= request.form.get('famLIVER', '')
-	famHPRTS 		= request.form.get('famHPRTS', '')
-	famAPOP 		= request.form.get('famAPOP', '')
-	famHDISE 		= request.form.get('famHDISE', '')
-	famDIABML 		= request.form.get('famDIABML', '')
-	famCANCER 		= request.form.get('famCANCER', '')
+	print(userInputList)
+	'''	
+	#TODO : change this ====================================
+	userInputList.append(int(request.form['SMK_STAT']))
+	userInputList.append(int(request.form['SMK_TERM']))
+	userInputList.append(int(request.form['DSQTY']))
+	userInputList.append(int(request.form['DRNK_HABIT']))
+	userInputList.append(int(request.form['TM1_DRKQTY']))
+	userInputList.append(int(request.form['EXERCI']))
+	'''
 
-	bar  = request.form.getlist('attributes[]')
-	print (bar)
+	#userInputList.append(int(request.form.get('SMK_STAT', '')))
+	#userInputList.append(int(request.form.get('SMK_TERM', '')))
+	#userInputList.append(int(request.form.get('DSQTY', '')))
+	#userInputList.append(int(request.form.get('DRNK_HABIT', '')))
+	#userInputList.append(int(request.form.get('TM1_DRKQTY', '')))
+	#userInputList.append(int(request.form.get('EXERCI', '')))
+	#TODO : ================= end =============================
 
 	# validation check (유효성 검사)
 
@@ -246,40 +300,6 @@ def measureDiabetsResult():
 	return render_template('result.html') # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 
-	# # sorting 문제 때문에 그냥 하드코딩스럽게 박아두겠습니다.
-
-	# calWeightList.append(int(request.form['height']))
-	# calWeightList.append(int(request.form['weight']))
-	# calWeightList.append(int(request.form['waist']))
-	# calWeightList.append(int(request.form['age']))
-	# calWeightList.append(stringToValue(request.form['pastHB']))
-	# calWeightList.append(stringToValue(request.form['pastDB']))
-	# calWeightList.append(stringToValue(request.form['famHB']))
-	# calWeightList.append(stringToValue(request.form['famDB']))
-	# calWeightList.append(int(request.form['smoke']))
-	# calWeightList.append(int(request.form['drink']))
-	# calWeightList.append(int(request.form['exercise']))
-	# calWeightList.append(float(request.form['hdp']))
-	# calWeightList.append(float(request.form['ldp']))
-	# calWeightList.append(float(request.form['bc']))
-	# calWeightList.append(float(request.form['bs']))
-	# calWeightList.append(float(request.form['col']))
-	# calWeightList.append(float(request.form['tg']))
-	# calWeightList.append(float(request.form['hdl']))
-	# calWeightList.append(float(request.form['ldl']))
-	# calWeightList.append(float(request.form['creatine']))
-	# calWeightList.append(float(request.form['got']))
-	# calWeightList.append(float(request.form['gpt']))
-	# calWeightList.append(float(request.form['ggt']))
-
-	# resultList = list()
-	# resultList = calculateResult()
-
-	# # hyper1_result,hyper2_result,diab1_result,diab2_result
-	
-	# print(resultList)
-
-	# return render_template('result.html', resultList=resultList) #, result = calculateResult() )
 
 # 계산 모델
 @app.route("/setting")
