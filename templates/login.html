@@ -96,5 +96,24 @@
   </div>
  </form>
 
+
+<!--  
+(in html)
+<img src="{{url_for('fig', fig_title = 'graph')}}" alt="Image Placeholder" height="500">
+
+ #이미지 그려주기(in flask)
+@app.route('/figure/<fig_title>')
+def fig(fig_title) :
+	data_x = [2, 4, 6, 8]
+	data_y = [5, 3, 9, 2]
+	plt.bar(data_x, data_y, label='Set 1', color='g')
+	img=BytesIO()
+	plt.savefig(img, format='png')
+	img.seek(0)
+	data=base64.encodebytes(img.getvalue()).decode()
+	return send_file(img, mimetype='image/png') 
+
+-->
+
 </body>
 </html>
