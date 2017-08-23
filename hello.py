@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 # from flaskext.mysql import MySQL
 import csv, math, io, pandas
 
 import json
-from werkzeug.utils import secure_filename
+#from werkzeug.utils import secure_filename
 
 diabeteList1 = list()
 diabeteList2 = list()
@@ -51,9 +51,28 @@ csvColumn = ['features','yearThree','yearFive','yearSeven','yearNine']
 # mysql.init_app(app)
 
 
-def calculateResult():
+def calculateResult_Logistic():
 
+	pred_3Year = 0
+	pred_5Year = 0
+	pred_7Year = 0
+	pred_9Year = 0
 
+	i = 0
+
+	for i in range(len(userInputList)):
+		pred_3Year += userInputList[i] * year3List[i+1]
+		pred_5Year += userInputList[i] * year5List[i+1]
+		pred_7Year += userInputList[i] * year7List[i+1]
+		pred_9Year += userInputList[i] * year9List[i+1]
+
+	# add bias
+	pred_3Year += year3List[0]
+	pred_5Year += year5List[0]
+	pred_7Year += year7List[0]
+	pred_9Year += year9List[0]
+
+	return [pred_3Year, pred_5Year, pred_7Year, pred_9Year]
 
 	'''
 	i =0
@@ -125,12 +144,20 @@ def yesNoToInt(str):
 	elif str == 'no':
 		return 1
 
+def checkNone(value):
+	if value == None:
+		return 0
+	else:
+		return value
 
+def diseaseCheckNone(value):
+	if value == None:
+		return "nothing"
+	else:
+		return value
 
 def pushIndexInfoToList(value, totalLen):
 	#value를 확인하고 해당 밸류를 제외한 앞뒤로 0을 밀어넣는다.
-
-	print('inputV =' , value)
 	if value == 0:
 		userInputList.append(1)
 		for i in range(1,totalLen):
@@ -145,9 +172,20 @@ def pushIndexInfoToList(value, totalLen):
 		for i in range(value+1, totalLen):
 			userInputList.append(0)
 
-	print(userInputList)
-	pass
 
+def	InsertSmokeData(SMK_STAT_v,SMK_TERM_v,DSQTY_v):
+	smk_stat_V= SMK_STAT_Cat.index(SMK_STAT_v)
+
+	if smk_stat_V == 0 : #not smoke
+		pushIndexInfoToList(0, len(SMK_STAT_Cat)+len(SMK_TERM_Cat)+len(DSQTY_Cat))
+
+	else:
+		pushIndexInfoToList(smk_stat_V, len(SMK_STAT_Cat))
+		pushIndexInfoToList(SMK_TERM_Cat.index(SMK_TERM_v), len(SMK_TERM_Cat))
+		pushIndexInfoToList(DSQTY_Cat.index(DSQTY_v), len(DSQTY_Cat))
+
+
+#######################################################################
 
 readCSVweight() # Read csv before app start
 
@@ -249,18 +287,20 @@ def measureDiabets():
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
 	# 순서 중요함
-	userInputList.append(float(request.form['BMI']))
-	userInputList.append(float(request.form['BP_HIGH']))
-	userInputList.append(float(request.form['BP_LWST']))
-	userInputList.append(float(request.form['BLDS']))
-	userInputList.append(float(request.form['TOT_CHOLE']))
-	userInputList.append(float(request.form['HMG']))
-	userInputList.append(float(request.form['SGOT_AST']))
-	userInputList.append(float(request.form['SGPT_ALT']))
-	userInputList.append(float(request.form['GAMMA_GTP']))
-	pushIndexInfoToList(disease_Cat.index(request.form.get('HCHK_PMH_CD1', '')), len(disease_Cat))
-	pushIndexInfoToList(disease_Cat.index(request.form.get('HCHK_PMH_CD2', '')), len(disease_Cat))
-	pushIndexInfoToList(disease_Cat.index(request.form.get('HCHK_PMH_CD3', '')), len(disease_Cat))
+	userInputList.append(float(request.form.get('BMI')))
+	userInputList.append(float(request.form.get('BP_HIGH')))
+	userInputList.append(float(request.form.get('BP_LWST')))
+	userInputList.append(float(request.form.get('BLDS')))
+	userInputList.append(float(request.form.get('TOT_CHOLE')))
+	userInputList.append(float(request.form.get('HMG')))
+	userInputList.append(float(request.form.get('SGOT_AST')))
+	userInputList.append(float(request.form.get('SGPT_ALT')))
+	userInputList.append(float(request.form.get('GAMMA_GTP')))
+
+	pushIndexInfoToList(disease_Cat.index(diseaseCheckNone(request.form.get('HCHK_PMH_CD1'))), len(disease_Cat))
+	pushIndexInfoToList(disease_Cat.index(diseaseCheckNone(request.form.get('HCHK_PMH_CD2'))), len(disease_Cat))
+	pushIndexInfoToList(disease_Cat.index(diseaseCheckNone(request.form.get('HCHK_PMH_CD3'))), len(disease_Cat))
+
 	userInputList.append(yesNoToInt(request.form.get('famLIVER', '')))
 	userInputList.append(yesNoToInt(request.form.get('famHPRTS', '')))
 	userInputList.append(yesNoToInt(request.form.get('famAPOP', '')))
@@ -268,24 +308,15 @@ def measureDiabetsResult():
 	userInputList.append(yesNoToInt(request.form.get('famDIABML', '')))
 	userInputList.append(yesNoToInt(request.form.get('famCANCER', '')))
 
-	print(userInputList)
-	'''	
-	#TODO : change this ====================================
-	userInputList.append(int(request.form['SMK_STAT']))
-	userInputList.append(int(request.form['SMK_TERM']))
-	userInputList.append(int(request.form['DSQTY']))
-	userInputList.append(int(request.form['DRNK_HABIT']))
-	userInputList.append(int(request.form['TM1_DRKQTY']))
-	userInputList.append(int(request.form['EXERCI']))
-	'''
+	InsertSmokeData(request.form.get('SMK_STAT',''),request.form.get('SMK_TERM',''),request.form.get('DSQTY',''))
 
-	#userInputList.append(int(request.form.get('SMK_STAT', '')))
-	#userInputList.append(int(request.form.get('SMK_TERM', '')))
-	#userInputList.append(int(request.form.get('DSQTY', '')))
-	#userInputList.append(int(request.form.get('DRNK_HABIT', '')))
-	#userInputList.append(int(request.form.get('TM1_DRKQTY', '')))
-	#userInputList.append(int(request.form.get('EXERCI', '')))
-	#TODO : ================= end =============================
+	pushIndexInfoToList(DRNK_HABIT_Cat.index(request.form.get('DRNK_HABIT', '')), len(DRNK_HABIT_Cat))
+	if request.form.get('TM1_DRKQTY') == None:
+		pushIndexInfoToList(0, len(DRNK_QTY_Cat))  #반병이하로 처리.
+	else:
+		pushIndexInfoToList(DRNK_QTY_Cat.index(request.form.get('TM1_DRKQTY', '')), len(DRNK_QTY_Cat))
+
+	pushIndexInfoToList(EXERCI_Cat.index(request.form.get('EXERCI', '')), len(EXERCI_Cat))
 
 	# validation check (유효성 검사)
 
@@ -297,7 +328,16 @@ def measureDiabetsResult():
 
 	# 	return render_template('measure.html', errors = errors)
 
-	return render_template('result.html') # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
+	logisticResults = calculateResult_Logistic()
+
+	pred3year = logisticResults[0]
+	pred5year = logisticResults[1]
+	pred7year = logisticResults[2]
+	pred9year = logisticResults[3]
+
+	del userInputList[:] #계산하고 지움.
+
+	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 
 
@@ -342,8 +382,8 @@ def uploadBefore():
 def saveUploadedFile():
 	file = request.files['file']
 
-	if file :
-		filename = secure_filename(file.filename)
+	#if file :
+		#filename = secure_filename(file.filename)
 
 	ss = file.read().decode('utf-8')
 	print(ss)
