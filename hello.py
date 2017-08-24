@@ -142,7 +142,7 @@ def yesNoToInt(str):
 	if str == 'yes':
 		return 0
 	elif str == 'no':
-		return 1
+		return 1     # no면 weight 값이 곱해지고, yes면 NA
 
 def checkNone(value):
 	if value == None:
@@ -300,16 +300,14 @@ def measureDiabetsResult():
 	pushIndexInfoToList(disease_Cat.index(diseaseCheckNone(request.form.get('HCHK_PMH_CD1'))), len(disease_Cat))
 	pushIndexInfoToList(disease_Cat.index(diseaseCheckNone(request.form.get('HCHK_PMH_CD2'))), len(disease_Cat))
 	pushIndexInfoToList(disease_Cat.index(diseaseCheckNone(request.form.get('HCHK_PMH_CD3'))), len(disease_Cat))
-
 	userInputList.append(yesNoToInt(request.form.get('famLIVER', '')))
 	userInputList.append(yesNoToInt(request.form.get('famHPRTS', '')))
 	userInputList.append(yesNoToInt(request.form.get('famAPOP', '')))
 	userInputList.append(yesNoToInt(request.form.get('famHDISE', '')))
 	userInputList.append(yesNoToInt(request.form.get('famDIABML', '')))
 	userInputList.append(yesNoToInt(request.form.get('famCANCER', '')))
-
 	InsertSmokeData(request.form.get('SMK_STAT',''),request.form.get('SMK_TERM',''),request.form.get('DSQTY',''))
-
+	print(userInputList)
 	pushIndexInfoToList(DRNK_HABIT_Cat.index(request.form.get('DRNK_HABIT', '')), len(DRNK_HABIT_Cat))
 	if request.form.get('TM1_DRKQTY') == None:
 		pushIndexInfoToList(0, len(DRNK_QTY_Cat))  #반병이하로 처리.
@@ -317,7 +315,6 @@ def measureDiabetsResult():
 		pushIndexInfoToList(DRNK_QTY_Cat.index(request.form.get('TM1_DRKQTY', '')), len(DRNK_QTY_Cat))
 
 	pushIndexInfoToList(EXERCI_Cat.index(request.form.get('EXERCI', '')), len(EXERCI_Cat))
-
 	# validation check (유효성 검사)
 
 	# if not famLIVER or not famHPRTS or not famAPOP \
@@ -328,6 +325,7 @@ def measureDiabetsResult():
 
 	# 	return render_template('measure.html', errors = errors)
 
+	print(userInputList)
 	logisticResults = calculateResult_Logistic()
 
 	pred3year = logisticResults[0]
@@ -335,8 +333,10 @@ def measureDiabetsResult():
 	pred7year = logisticResults[2]
 	pred9year = logisticResults[3]
 
-	del userInputList[:] #계산하고 지움.
+	print(pred3year,pred5year,pred7year,pred9year)
 
+	del userInputList[:] #계산하고 지움.
+	#return render_template('result.html')
 	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 
