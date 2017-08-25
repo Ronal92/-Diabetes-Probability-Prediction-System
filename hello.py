@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, flash, url_for, session
+from flask import Flask, render_template, request, redirect, flash, url_for, session, send_file
+from wtforms import validators, Form, StringField
 # from flaskext.mysql import MySQL
-import csv, math, io, pandas
+import csv, math, io, pandas             
+import matplotlib.pyplot as plt #Graph
+import plotly.plotly as py      #Graph
+from io import BytesIO          #Graph
 
 import json
 #from werkzeug.utils import secure_filename
+
+# Global vaiable to be used in graph
+pred3year = 0
+pred5year = 0
+pred7year = 0
+pred9year = 0
 
 diabeteList1 = list()
 diabeteList2 = list()
@@ -49,6 +59,37 @@ csvColumn = ['features','yearThree','yearFive','yearSeven','yearNine']
 # app.config['MYSQL_DATABASE_DB'] = 'test'
 # app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 # mysql.init_app(app)
+
+
+
+# validation check (유효성 검사)
+class MeasureForm(Form) :
+	BMI=StringField('BMI', [validators.Length(min=1)])
+	BP_HIGH=StringField('BP_HIGH', [validators.Length(min=1)])
+	BP_LWST=StringField('BP_LWST', [validators.Length(min=1)])
+	BLDS=StringField('BLDS', [validators.Length(min=1)])
+	TOT_CHOLE=StringField('TOT_CHOLE', [validators.Length(min=1)])
+	HMG=StringField('HMG', [validators.Length(min=1)])
+	SGPT_ALT=StringField('SGPT_ALT', [validators.Length(min=1)])
+	SGOT_AST=StringField('SGOT_AST', [validators.Length(min=1)])
+	GAMMA_GTP=StringField('GAMMA_GTP', [validators.Length(min=1)])
+	HCHK_PMH_CD1=StringField('HCHK_PMH_CD1', [validators.Length(min=1)])
+	HCHK_PMH_CD2=StringField('HCHK_PMH_CD2', [validators.Length(min=1)])
+	HCHK_PMH_CD3=StringField('HCHK_PMH_CD3', [validators.Length(min=1)])
+	famLIVER=StringField('famLIVER', [validators.Length(min=1)])
+	famHPRTS=StringField('famHPRTS', [validators.Length(min=1)])
+	famAPOP=StringField('famAPOP', [validators.Length(min=1)])
+	famHDISE=StringField('famHDISE', [validators.Length(min=1)])
+	famDIABML=StringField('famDIABML', [validators.Length(min=1)])
+	famCANCER=StringField('famCANCER', [validators.Length(min=1)])
+	SMK_STAT=StringField('SMK_STAT', [validators.Length(min=1)])
+	SMK_TERM=StringField('SMK_TERM', [validators.Length(min=1)])
+	DSQTY=StringField('DSQTY', [validators.Length(min=1)])
+	DRNK_HABIT=StringField('DRNK_HABIT', [validators.Length(min=1)])
+	TM1_DRKQTY=StringField('TM1_DRKQTY', [validators.Length(min=1)])
+	EXERCI=StringField('EXERCI', [validators.Length(min=1)])
+
+
 
 
 def calculateResult_Logistic():
@@ -286,6 +327,13 @@ def measureDiabets():
 # 계산 결과 
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
+
+	# validation check (유효성 검사)
+	form = MeasureForm(request.form)
+	if not form.validate() :
+		errors = "Please enter all the fields."
+		return render_template('measure.html', errors = errors)
+
 	# 순서 중요함
 	userInputList.append(float(request.form.get('BMI')))
 	userInputList.append(float(request.form.get('BP_HIGH')))
@@ -315,17 +363,10 @@ def measureDiabetsResult():
 		pushIndexInfoToList(DRNK_QTY_Cat.index(request.form.get('TM1_DRKQTY', '')), len(DRNK_QTY_Cat))
 
 	pushIndexInfoToList(EXERCI_Cat.index(request.form.get('EXERCI', '')), len(EXERCI_Cat))
-	# validation check (유효성 검사)
 
-	# if not famLIVER or not famHPRTS or not famAPOP \
-	# 	or not famHDISE or not famDIABML or not famCANCER \
-	# 	or not [v for v in request.form.getlist('attributes[]')] :
-
-	# 	errors = "Please enter all the fields."
-
-	# 	return render_template('measure.html', errors = errors)
 
 	print(userInputList)
+
 	logisticResults = calculateResult_Logistic()
 
 	pred3year = logisticResults[0]
@@ -336,10 +377,22 @@ def measureDiabetsResult():
 	print(pred3year,pred5year,pred7year,pred9year)
 
 	del userInputList[:] #계산하고 지움.
-	#return render_template('result.html')
+
 	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
+@app.route('/figure/<fig_title>')
+def graphHBP(fig_title):
 
+	data_x = [3, 5, 7, 9]
+	data_y = [11, 11, 11, 11]
+	plt.bar(data_x, data_y, label='Set 1', color='b')
+
+	img=BytesIO()
+	plt.savefig(img)
+	img.seek(0)
+	plt.close()
+	data=base64.encodebytes(img.getvalue()).decode()
+	return send_file(data, mimetype='image/png') 	
 
 # 계산 모델
 @app.route("/setting")
