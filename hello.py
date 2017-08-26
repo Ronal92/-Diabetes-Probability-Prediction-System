@@ -3,12 +3,12 @@
 from flask import Flask, render_template, request, redirect, flash, url_for, session, send_file
 from wtforms import validators, Form, StringField
 # from flaskext.mysql import MySQL
-import csv, math, io, pandas             
+import csv, math, io, pandas, numpy, base64             
 import matplotlib.pyplot as plt #Graph
 import plotly.plotly as py      #Graph
 from io import BytesIO          #Graph
 
-import json
+
 #from werkzeug.utils import secure_filename
 
 # Global vaiable to be used in graph
@@ -378,21 +378,40 @@ def measureDiabetsResult():
 
 	del userInputList[:] #계산하고 지움.
 
-	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
+	### Generating X,Y coordinaltes to be used in plot
+	X = [3,5,7,9]
+	Y = [pred3year,pred5year,pred7year,pred9year]
+	### Generating The Plot
+	plt.plot(X,Y)
+	barWidth=0.5
+	plt.bar(X,Y, width=barWidth, align='center') #< added align keyword
 
-@app.route('/figure/<fig_title>')
-def graphHBP(fig_title):
+	### Saving plot to disk in png format
+	plt.savefig('square_plot.png')
 
-	data_x = [3, 5, 7, 9]
-	data_y = [11, 11, 11, 11]
-	plt.bar(data_x, data_y, label='Set 1', color='b')
+	### Rendering Plot in Html
+	figfile = BytesIO()
+	plt.savefig(figfile, format='png')
+	figfile.seek(0)
+	figdata_png = base64.b64encode(figfile.getvalue())
+	result = figdata_png
+	################################################## 
 
-	img=BytesIO()
-	plt.savefig(img)
-	img.seek(0)
-	plt.close()
-	data=base64.encodebytes(img.getvalue()).decode()
-	return send_file(data, mimetype='image/png') 	
+	return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
+
+# @app.route('/figure/<fig_title>')
+# def graphHBP(fig_title):
+
+	# data_x = [3, 5, 7, 9]
+	# data_y = [1, 2, 3, 4s]
+	# plt.bar(data_x, data_y, label='Set 1', color='b')
+	# fig = draw_polygons(fig_title)
+	# img=BytesIO()
+	# plt.savefig(img)
+	# img.seek(0)
+	# plt.close()
+	# data=base64.encodebytes(img.getvalue()).decode()
+	# return send_file(img) 	
 
 # 계산 모델
 @app.route("/setting")
