@@ -10,7 +10,26 @@
 		function onResult(){
 			window.location.href="/measure/result";			
 		}
+		function onChange() {
+			var btnModel = document.getElementById("btnModel")
 
+			if(btnModel.value == "MLP") {
+				btnModel.value = "Logistics";
+				document.getElementById("imgForLogistic").style.display="none";
+				document.getElementById("model1_3").innerHTML={{resMLP3}};
+				document.getElementById("model1_5").innerHTML={{resMLP5}};
+				document.getElementById("model1_7").innerHTML={{resMLP7}};
+				document.getElementById("model1_9").innerHTML={{resMLP9}};
+			} else {
+				btnModel.value = "MLP";
+				document.getElementById("imgForLogistic").style.display="inline";
+				document.getElementById("model1_3").innerHTML={{pred3year}};
+				document.getElementById("model1_5").innerHTML={{pred5year}};
+				document.getElementById("model1_7").innerHTML={{pred7year}};
+				document.getElementById("model1_9").innerHTML={{pred9year}};
+
+			}
+		}
 
 	</script>
 	<style type="text/css">
@@ -74,6 +93,7 @@
 			
 
 		</div>
+		<input type="button" id="btnModel" style="position: absolute; top: 80px;" onclick="onChange()" value="MLP"></input>
 		<table>
 			<tr>
 				<th></th>
@@ -87,16 +107,16 @@
 					고혈압(모델1)
 				</th>
 				<td>
-					{{pred3year}}
+					<div id="model1_3">{{pred3year}}</div>
 				</td>
 				<td>
-					{{pred5year}}
+					<div id="model1_5">{{pred5year}}</div>
 				</td>
 				<td>
-					{{pred7year}}
+					<div id="model1_7">{{pred7year}}</div>
 				</td>
 				<td>
-					{{pred9year}}
+					<div id="model1_9">{{pred9year}}</div>
 				</td>
 			</tr>
 			
@@ -118,9 +138,6 @@
 				</td>
 			</tr>			
 		</table>
-
-		<img src="data:image/png;base64,{{ result }}" width="500">
-
-			
+		<img id="imgForLogistic" src="data:image/png;base64,{{ result }}" width="400" >
 </body>
 </html>

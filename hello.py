@@ -394,10 +394,12 @@ def measureDiabetsResult():
 	plt.savefig(figfile, format='png')
 	figfile.seek(0)
 	figdata_png = base64.b64encode(figfile.getvalue())
-	result = figdata_png
+	### Remove b' from begining and ' in the end
+	### So that we can send the string within base64 noation
+	result = str(figdata_png)[2:-1]
 	################################################## 
 
-	return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
+	return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 # @app.route('/figure/<fig_title>')
 # def graphHBP(fig_title):
