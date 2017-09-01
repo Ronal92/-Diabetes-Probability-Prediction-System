@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, flash, url_for, session
+from flask import Flask, render_template, request, redirect, flash, url_for, session, send_file
+from wtforms import validators, Form, StringField
 # from flaskext.mysql import MySQL
-import csv, math, io, pandas
+import csv, math, io, pandas, numpy, base64             
+import matplotlib.pyplot as plt #Graph
+import plotly.plotly as py      #Graph
+from io import BytesIO          #Graph
 
-import json
+
 #from werkzeug.utils import secure_filename
+
+# Global vaiable to be used in graph
+pred3year = 0
+pred5year = 0
+pred7year = 0
+pred9year = 0
 
 diabeteList1 = list()
 diabeteList2 = list()
@@ -51,6 +61,37 @@ csvColumn = ['features','yearThree','yearFive','yearSeven','yearNine']
 # mysql.init_app(app)
 
 
+
+# validation check (유효성 검사)
+class MeasureForm(Form) :
+	BMI=StringField('BMI', [validators.Length(min=1)])
+	BP_HIGH=StringField('BP_HIGH', [validators.Length(min=1)])
+	BP_LWST=StringField('BP_LWST', [validators.Length(min=1)])
+	BLDS=StringField('BLDS', [validators.Length(min=1)])
+	TOT_CHOLE=StringField('TOT_CHOLE', [validators.Length(min=1)])
+	HMG=StringField('HMG', [validators.Length(min=1)])
+	SGPT_ALT=StringField('SGPT_ALT', [validators.Length(min=1)])
+	SGOT_AST=StringField('SGOT_AST', [validators.Length(min=1)])
+	GAMMA_GTP=StringField('GAMMA_GTP', [validators.Length(min=1)])
+	HCHK_PMH_CD1=StringField('HCHK_PMH_CD1', [validators.Length(min=1)])
+	HCHK_PMH_CD2=StringField('HCHK_PMH_CD2', [validators.Length(min=1)])
+	HCHK_PMH_CD3=StringField('HCHK_PMH_CD3', [validators.Length(min=1)])
+	famLIVER=StringField('famLIVER', [validators.Length(min=1)])
+	famHPRTS=StringField('famHPRTS', [validators.Length(min=1)])
+	famAPOP=StringField('famAPOP', [validators.Length(min=1)])
+	famHDISE=StringField('famHDISE', [validators.Length(min=1)])
+	famDIABML=StringField('famDIABML', [validators.Length(min=1)])
+	famCANCER=StringField('famCANCER', [validators.Length(min=1)])
+	SMK_STAT=StringField('SMK_STAT', [validators.Length(min=1)])
+	SMK_TERM=StringField('SMK_TERM', [validators.Length(min=1)])
+	DSQTY=StringField('DSQTY', [validators.Length(min=1)])
+	DRNK_HABIT=StringField('DRNK_HABIT', [validators.Length(min=1)])
+	TM1_DRKQTY=StringField('TM1_DRKQTY', [validators.Length(min=1)])
+	EXERCI=StringField('EXERCI', [validators.Length(min=1)])
+
+
+
+
 def calculateResult_Logistic():
 
 	pred_3Year = 0
@@ -71,18 +112,6 @@ def calculateResult_Logistic():
 	pred_5Year += year5List[0]
 	pred_7Year += year7List[0]
 	pred_9Year += year9List[0]
-
-	#exp Cacluation
-	exp3Year = math.exp(pred_3Year)
-	exp5Year = math.exp(pred_5Year)
-	exp7Year = math.exp(pred_7Year)
-	exp9Year = math.exp(pred_9Year)
-
-	pred_3Year = round(exp3Year/(1+exp3Year),4)
-	pred_5Year = round(exp5Year/(1+exp5Year),4)
-	pred_7Year = round(exp7Year/(1+exp7Year),4)
-	pred_9Year = round(exp9Year/(1+exp9Year),4)
-
 
 	return [pred_3Year, pred_5Year, pred_7Year, pred_9Year]
 
@@ -298,6 +327,13 @@ def measureDiabets():
 # 계산 결과 
 @app.route("/measure/result", methods=['POST'])
 def measureDiabetsResult():
+
+	# validation check (유효성 검사)
+	form = MeasureForm(request.form)
+	if not form.validate() :
+		errors = "Please enter all the fields."
+		return render_template('measure.html', errors = errors)
+
 	# 순서 중요함
 	userInputList.append(float(request.form.get('BMI')))
 	userInputList.append(float(request.form.get('BP_HIGH')))
@@ -327,17 +363,10 @@ def measureDiabetsResult():
 		pushIndexInfoToList(DRNK_QTY_Cat.index(request.form.get('TM1_DRKQTY', '')), len(DRNK_QTY_Cat))
 
 	pushIndexInfoToList(EXERCI_Cat.index(request.form.get('EXERCI', '')), len(EXERCI_Cat))
-	# validation check (유효성 검사)
 
-	# if not famLIVER or not famHPRTS or not famAPOP \
-	# 	or not famHDISE or not famDIABML or not famCANCER \
-	# 	or not [v for v in request.form.getlist('attributes[]')] :
-
-	# 	errors = "Please enter all the fields."
-
-	# 	return render_template('measure.html', errors = errors)
 
 	print(userInputList)
+
 	logisticResults = calculateResult_Logistic()
 
 	pred3year = logisticResults[0]
@@ -348,8 +377,32 @@ def measureDiabetsResult():
 	print(pred3year,pred5year,pred7year,pred9year)
 
 	del userInputList[:] #계산하고 지움.
-	#return render_template('result.html')
-	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
+
+	### Generating X,Y coordinaltes to be used in plot
+
+	X = [3,5,7,9]
+	Y = [pred3year,pred5year,pred7year,pred9year]
+	### Generating The Plot
+	plt.plot(X,Y)
+	barWidth=0.5
+	plt.bar(X,Y, width=barWidth, align='center') #< added align keyword
+
+	### Saving plot to disk in png format
+	plt.savefig('square_plot.png')
+
+	### Rendering Plot in Html
+	figfile = BytesIO()
+	plt.savefig(figfile, format='png')
+	plt.close()
+	figfile.seek(0)
+	figdata_png = base64.b64encode(figfile.getvalue())
+	### Remove b' from begining and ' in the end
+	### So that we can send the string within base64 noation
+	# result = str(figdata_png)[2:-1]
+	result = figdata_png
+	################################################## 
+
+	return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 
 
