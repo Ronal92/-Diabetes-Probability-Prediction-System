@@ -113,6 +113,22 @@ def calculateResult_Logistic():
 	pred_7Year += year7List[0]
 	pred_9Year += year9List[0]
 
+	#exp Cacluation
+	exp3Year = math.exp(pred_3Year)
+	exp5Year = math.exp(pred_5Year)
+	exp7Year = math.exp(pred_7Year)
+	exp9Year = math.exp(pred_9Year)
+
+	print(exp3Year,exp5Year,exp7Year,exp9Year)
+
+
+	pred_3Year = (exp3Year/(1+exp3Year))*1000
+	pred_5Year = (exp5Year/(1+exp5Year))*1000
+	pred_7Year = (exp7Year/(1+exp7Year))*1000
+	pred_9Year = (exp9Year/(1+exp9Year))*1000
+	
+
+
 	return [pred_3Year, pred_5Year, pred_7Year, pred_9Year]
 
 	'''
@@ -365,7 +381,7 @@ def measureDiabetsResult():
 	pushIndexInfoToList(EXERCI_Cat.index(request.form.get('EXERCI', '')), len(EXERCI_Cat))
 
 
-	print(userInputList)
+	#print(userInputList)
 
 	logisticResults = calculateResult_Logistic()
 
@@ -374,7 +390,6 @@ def measureDiabetsResult():
 	pred7year = logisticResults[2]
 	pred9year = logisticResults[3]
 
-	print(pred3year,pred5year,pred7year,pred9year)
 
 	del userInputList[:] #계산하고 지움.
 
