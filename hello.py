@@ -9,6 +9,8 @@ import plotly.plotly as py      #Graph
 from io import BytesIO          #Graph
 
 
+
+
 #from werkzeug.utils import secure_filename
 
 # Global vaiable to be used in graph
@@ -119,50 +121,12 @@ def calculateResult_Logistic():
 	exp7Year = math.exp(pred_7Year)
 	exp9Year = math.exp(pred_9Year)
 
-	print(exp3Year,exp5Year,exp7Year,exp9Year)
-
-
 	pred_3Year = (exp3Year/(1+exp3Year))*1000
 	pred_5Year = (exp5Year/(1+exp5Year))*1000
 	pred_7Year = (exp7Year/(1+exp7Year))*1000
 	pred_9Year = (exp9Year/(1+exp9Year))*1000
 	
-
-
 	return [pred_3Year, pred_5Year, pred_7Year, pred_9Year]
-
-	'''
-	i =0
-	diab1 =0.0
-	diab2 =0.0
-	hyper1 =0.0
-	hyper2 =0.0
-
-	print(len(calWeightList))
-
-	for i in range(len(calWeightList)):
-		if i ==0:
-			diab1 += calWeightList[i]
-			diab2 += calWeightList[i]
-			hyper1 += calWeightList[i]
-			hyper2 += calWeightList[i]
-		else:
-			diab1 += calWeightList[i] * diabeteList1[i-1]
-			diab2 += calWeightList[i] * diabeteList2[i-1]
-			hyper1 += calWeightList[i] * hyperList1[i-1]
-			hyper2 += calWeightList[i] * hyperList2[i-1]
-		i=+1
-
-	diab1_result = round( 1 / (math.exp(-1*diab1)+1) , 6)
-	diab2_result = round( 1 / (math.exp(-1*diab2)+1) , 6)
-	hyper1_result = round( 1 / (math.exp(-1*hyper1)+1) , 6)
-	hyper2_result = round( 1 / (math.exp(-1*hyper2)+1) , 6)
-
-	del calWeightList[:]
-	print(" d1 = "+str(diab1_result)+" d2 = "+str(diab2_result)+" h1 = "+str(hyper1_result)+" h1 = "+str(hyper2_result))
-	del calWeightList[:]
-	return [hyper1_result,hyper2_result,diab1_result,diab2_result]
-'''
 
 
 def ConvertStringListIntoFloatList(strList, floatList):
@@ -172,7 +136,7 @@ def ConvertStringListIntoFloatList(strList, floatList):
 
 
 def readCSVweight():
-	csvData = pandas.read_csv('LogisticWeight.csv', names=csvColumn)
+	csvData = pandas.read_csv("C:/Users/korea/Documents/Github/Diabetes-Probability-Prediction-System/LogisticWeight.csv", names=csvColumn)
 	year3List_str = csvData.yearThree.tolist()
 	year5List_str = csvData.yearFive.tolist()
 	year7List_str = csvData.yearSeven.tolist()
@@ -187,12 +151,12 @@ def readCSVweight():
 	ConvertStringListIntoFloatList(year5List_str,year5List)
 	ConvertStringListIntoFloatList(year7List_str,year7List)
 	ConvertStringListIntoFloatList(year9List_str,year9List)
-
+	print("read complete")
 
 
 
 def	changeCSV():
-	#TOdo : 모두 바껴진 값을 csv에 다 떄려박는다
+	#Todo : 모두 바껴진 값을 csv에 다 넣는다.
 	pass
 
 def yesNoToInt(str):
@@ -338,6 +302,7 @@ def saveSignUp():
 @app.route("/measure", methods=['GET'])
 def measureDiabets():
 	errors = ''
+
 	return render_template('measure.html', errors = errors)
 
 # 계산 결과 
@@ -390,11 +355,13 @@ def measureDiabetsResult():
 	pred7year = logisticResults[2]
 	pred9year = logisticResults[3]
 
+	print("PASS!")
+	print("3:",pred3year,"5:",pred5year,"7:",pred7year,"9:",pred9year)
 
 	del userInputList[:] #계산하고 지움.
 
+	'''
 	### Generating X,Y coordinaltes to be used in plot
-
 	X = [3,5,7,9]
 	Y = [pred3year,pred5year,pred7year,pred9year]
 	### Generating The Plot
@@ -416,8 +383,9 @@ def measureDiabetsResult():
 	# result = str(figdata_png)[2:-1]
 	result = figdata_png
 	################################################## 
-
-	return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
+	'''
+	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99)
+	#return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 
 
