@@ -4,9 +4,9 @@ from flask import Flask, render_template, request, redirect, flash, url_for, ses
 from wtforms import validators, Form, StringField
 # from flaskext.mysql import MySQL
 import csv, math, io, pandas, numpy, base64             
-import matplotlib.pyplot as plt #Graph
-import plotly.plotly as py      #Graph
-from io import BytesIO          #Graph
+#import matplotlib.pyplot as plt #Graph
+#import plotly.plotly as py      #Graph
+#from io import BytesIO          #Graph
 
 
 
@@ -136,7 +136,7 @@ def ConvertStringListIntoFloatList(strList, floatList):
 
 
 def readCSVweight():
-	csvData = pandas.read_csv("C:/Users/korea/Documents/Github/Diabetes-Probability-Prediction-System/LogisticWeight.csv", names=csvColumn)
+	csvData = pandas.read_csv("C:/Users/SongK/Documents/GitHub/Diabetes-Probability-Prediction-System/LogisticWeight.csv", names=csvColumn)
 	year3List_str = csvData.yearThree.tolist()
 	year5List_str = csvData.yearFive.tolist()
 	year7List_str = csvData.yearSeven.tolist()
@@ -151,9 +151,6 @@ def readCSVweight():
 	ConvertStringListIntoFloatList(year5List_str,year5List)
 	ConvertStringListIntoFloatList(year7List_str,year7List)
 	ConvertStringListIntoFloatList(year9List_str,year9List)
-	print("read complete")
-
-
 
 def	changeCSV():
 	#Todo : 모두 바껴진 값을 csv에 다 넣는다.
@@ -350,13 +347,10 @@ def measureDiabetsResult():
 
 	logisticResults = calculateResult_Logistic()
 
-	pred3year = logisticResults[0]
-	pred5year = logisticResults[1]
-	pred7year = logisticResults[2]
-	pred9year = logisticResults[3]
-
-	print("PASS!")
-	print("3:",pred3year,"5:",pred5year,"7:",pred7year,"9:",pred9year)
+	pred3year = round(logisticResults[0],4)
+	pred5year = round(logisticResults[1],4)
+	pred7year = round(logisticResults[2],4)
+	pred9year = round(logisticResults[3],4)
 
 	del userInputList[:] #계산하고 지움.
 
@@ -384,7 +378,7 @@ def measureDiabetsResult():
 	result = figdata_png
 	################################################## 
 	'''
-	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99)
+	return render_template('result.html', pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.19, resMLP5=0.29, resMLP7=0.39, resMLP9=0.99)
 	#return render_template('result.html', result=result, pred3year=pred3year, pred5year=pred5year,pred7year=pred7year,pred9year=pred9year, resMLP3=0.99, resMLP5=0.99, resMLP7=0.99, resMLP9=0.99) # 임시로 최종 결과를 메인페이지 볼수 있게 처리함.
 
 

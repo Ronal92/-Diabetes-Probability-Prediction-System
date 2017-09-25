@@ -16,17 +16,17 @@
 			if(btnModel.value == "MLP") {
 				btnModel.value = "Logistics";
 				document.getElementById("imgForLogistic").style.display="none";
-				document.getElementById("model1_3").innerHTML={{resMLP3}};
-				document.getElementById("model1_5").innerHTML={{resMLP5}};
-				document.getElementById("model1_7").innerHTML={{resMLP7}};
-				document.getElementById("model1_9").innerHTML={{resMLP9}};
+				document.getElementById("model1_3").innerHTML={resMLP3};
+				document.getElementById("model1_5").innerHTML={resMLP5};
+				document.getElementById("model1_7").innerHTML={resMLP7};
+				document.getElementById("model1_9").innerHTML={resMLP9};
 			} else {
 				btnModel.value = "MLP";
 				document.getElementById("imgForLogistic").style.display="inline";
-				document.getElementById("model1_3").innerHTML={{pred3year}};
-				document.getElementById("model1_5").innerHTML={{pred5year}};
-				document.getElementById("model1_7").innerHTML={{pred7year}};
-				document.getElementById("model1_9").innerHTML={{pred9year}};
+				document.getElementById("model1_3").innerHTML={pred3year};
+				document.getElementById("model1_5").innerHTML={pred5year};
+				document.getElementById("model1_7").innerHTML={pred7year};
+				document.getElementById("model1_9").innerHTML={pred9year};
 
 			}
 		}
