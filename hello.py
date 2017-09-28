@@ -102,7 +102,6 @@ def calculateResult_Logistic():
 	pred_9Year = 0
 
 	i = 0
-
 	for i in range(len(userInputList)):
 		pred_3Year += userInputList[i] * year3List[i+1]
 		pred_5Year += userInputList[i] * year5List[i+1]
@@ -121,11 +120,11 @@ def calculateResult_Logistic():
 	exp7Year = math.exp(pred_7Year)
 	exp9Year = math.exp(pred_9Year)
 
-	pred_3Year = (exp3Year/(1+exp3Year))*1000
-	pred_5Year = (exp5Year/(1+exp5Year))*1000
-	pred_7Year = (exp7Year/(1+exp7Year))*1000
-	pred_9Year = (exp9Year/(1+exp9Year))*1000
-	
+	pred_3Year = round(exp3Year/(1+exp3Year),4)
+	pred_5Year = round(exp5Year/(1+exp5Year),4)
+	pred_7Year = round(exp7Year/(1+exp7Year),4)
+	pred_9Year = round(exp9Year/(1+exp9Year),4)
+	print(pred_3Year,pred_5Year,pred_7Year,pred_9Year)
 	return [pred_3Year, pred_5Year, pred_7Year, pred_9Year]
 
 
@@ -347,10 +346,10 @@ def measureDiabetsResult():
 
 	logisticResults = calculateResult_Logistic()
 
-	pred3year = round(logisticResults[0],4)
-	pred5year = round(logisticResults[1],4)
-	pred7year = round(logisticResults[2],4)
-	pred9year = round(logisticResults[3],4)
+	pred3year = logisticResults[0] #round(logisticResults[0],4)
+	pred5year = logisticResults[1] #round(logisticResults[1],4)
+	pred7year = logisticResults[2] #round(logisticResults[2],4)
+	pred9year = logisticResults[3] #round(logisticResults[3],4)
 
 	del userInputList[:] #계산하고 지움.
 
